@@ -38,7 +38,9 @@ for (const p of pasos) {
   if (p.texto) console.log(p.texto, '→', await page.$eval(p.texto, (el) => el.innerText.replace(/\s+/g, ' ').trim()).catch(() => '(no visible)'));
   if (p.foto) {
     const archivo = join(salida, `${p.foto}.png`);
-    await page.screenshot({ path: archivo });
+    // p.clip: selector CSS para fotografiar solo ese elemento.
+    if (p.clip) await (await page.$(p.clip)).screenshot({ path: archivo });
+    else await page.screenshot({ path: archivo });
     console.log('foto →', archivo);
   }
 }

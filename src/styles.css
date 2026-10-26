@@ -121,8 +121,8 @@ button:disabled { cursor: not-allowed; }
   place-items: center;
 }
 .mision-icono canvas {
-  width: calc(var(--u) * 56px);
-  height: calc(var(--u) * 56px);
+  width: calc(var(--u) * 44px);
+  height: calc(var(--u) * 55px);
   image-rendering: pixelated;
 }
 .mision-cuerpo { display: flex; align-items: center; gap: calc(var(--u) * 18px); }
@@ -161,8 +161,8 @@ button:disabled { cursor: not-allowed; }
 }
 .escenario-marco {
   position: relative;
-  width: calc(var(--u) * 740px);
-  height: calc(var(--u) * 740px);
+  width: calc(var(--u) * 724px);
+  height: calc(var(--u) * 750px);
   padding: calc(var(--u) * 8px);
   background: #12151B;
   border: calc(var(--u) * 4px) solid var(--borde);
@@ -190,7 +190,7 @@ button:disabled { cursor: not-allowed; }
 .controles {
   display: flex;
   gap: calc(var(--u) * 20px);
-  width: calc(var(--u) * 740px);
+  width: calc(var(--u) * 724px);
 }
 .btn {
   height: calc(var(--u) * 68px);

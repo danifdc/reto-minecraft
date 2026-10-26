@@ -80,6 +80,11 @@ Tablero de 10×10 casillas: las que no son del camino son decoración no transit
 - El "ideal" de un nivel no sube más de 3 respecto al anterior (la excepción son los niveles de repaso 4, 7, 9 y 11, que pueden ser un poco más largos).
 - Los 3 niveles de `src/levels/prueba.ts` son solo para probar el motor y **no representan** la dificultad real: se reemplazan en la Fase 4.
 
+**Reglas visuales (por la vista 3/4):**
+- El héroe empieza **detrás de BIT y en la misma fila**: si está justo arriba o abajo, los sprites se superponen.
+- Todos los árboles se pueden romper. Para los bordes del camino que no deben romperse, usar muros, rocas, vallas, cultivos o agua.
+- La piedra rompible (`P`, clara y agrietada) debe verse distinta de los muros (`#`): no usar `P` como pared decorativa.
+
 ### Parte 1 — La aldea y el bosque
 
 | # | Título | Escena | Objetivo y concepto | Bloques nuevos | Ideal |
@@ -136,7 +141,7 @@ Tablero de 10×10 casillas: las que no son del camino son decoración no transit
 ## Fases de desarrollo
 
 1. ✅ **Base jugable:** proyecto Vite+TS, layout 16:9, Blockly con todos los bloques, motor de ejecución (paso a paso y resaltado), escenario Phaser con gráficos provisionales y 3 niveles de prueba.
-2. **Arte y animación:** tiles pixel art, BIT, héroes, Sombris, animaciones, partículas y recorrido del héroe.
+2. ✅ **Arte y animación:** vista 3/4 con pixel art por tema (7 temas), BIT, 4 aspectos de héroe, Sombris (normal y de fuego), animaciones, partículas y recorrido del héroe con confeti.
 3. **Estructura del juego:** portada, selección de héroe, barra de niveles, contraseña, batería, localStorage y pantallas de victoria, error, pausa y final.
 4. **Los 20 niveles:** mapas definitivos, textos y prueba de que cada nivel tiene solución.
 5. **Sonido y pulido:** efectos, aviso en móvil, ajustes finales y publicación en GitHub Pages.

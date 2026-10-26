@@ -32,6 +32,8 @@ async function iniciar() {
   if (import.meta.env.DEV) {
     // Ganchos para las pruebas automáticas (scripts/captura.mjs). No existen en la versión publicada.
     const { parseSolucion } = await import('./engine/parse');
+    const { GALERIA } = await import('./levels/galeria');
+    const { World } = await import('./engine/world');
     Object.assign(window, {
       __debug: {
         juego,
@@ -40,6 +42,12 @@ async function iniciar() {
         cargar: (n: number) => juego!.cargar(n),
         ponerSolucion: (n: number) => editor.ponerPrograma(parseSolucion(NIVELES[n].solucion)),
         ponerTexto: (t: string) => editor.ponerPrograma(parseSolucion(t)),
+        galeria: (tema: string) => escena.mostrar(new World({ ...GALERIA, tema } as typeof GALERIA)),
+        sprites: () => import('./scene/visor').then((m) => m.mostrarVisor()),
+        aspecto: (n: number) => {
+          escena.aspecto = n;
+          juego!.reiniciar();
+        },
       },
     });
   }
