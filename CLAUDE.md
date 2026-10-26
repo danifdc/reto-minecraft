@@ -34,8 +34,17 @@ Nadie del equipo edita el código a mano: todos los cambios los hace Claude.
     - `animar(events)` anima los eventos.
     - `celebrar()` hace que el héroe recorra `world.recorrido`, con confeti.
   - `visor.ts` (solo dev: `__debug.sprites()`) muestra todos los cuadros de los personajes ampliados.
-- `game/juego.ts`: controlador con los modos editar, auto, pasos y fin. El contador `corrida` invalida animaciones viejas al reiniciar.
-- `ui/ui.ts`: todo el acceso al DOM.
+- `levels/index.ts`:
+  - `PARTE1` y `PARTE2` (todavía con niveles de prueba).
+  - `INICIO_PARTE2` es el índice del primer nivel bloqueado.
+  - `CONTRASENA_PARTE2 = 'recargar'`; se compara sin distinguir mayúsculas, tildes ni espacios.
+- `game/juego.ts`: controlador.
+  - Pantallas: portada → juego; pausa (BIT sin batería + contraseña); final.
+  - Modos de nivel: editar, auto, pasos y fin. El contador `corrida` invalida animaciones viejas al reiniciar.
+  - La batería baja con los niveles completados de la parte 1 y se llena con la contraseña.
+- `game/progreso.ts`: progreso en `localStorage` (clave `cristal-del-amanecer:progreso`). Guarda el aspecto del héroe, el último nivel, los niveles completados (con su mejor cantidad de bloques), el código Blockly de cada nivel, si la parte 2 está abierta y si ya se vio el prólogo.
+- `ui/ui.ts`: todo el acceso al DOM. `ui/arte.ts`: ilustraciones pixel art de la interfaz (portada, diálogos, pausa), reutilizando los sprites del juego.
+- El Chrome de `scripts/captura.mjs` arranca siempre sin progreso guardado: empieza en la portada y hay que hacer clic en `#btn-jugar` y cerrar el prólogo (`.dialogo-botones .btn`), o usar `__debug.cargar(n)`.
 
 ## Convenciones
 - La UI se diseña sobre 1920×1080. Toda medida CSS se escribe `calc(var(--u) * Npx)`; `--u` lo fija `main.ts`. No usar `transform: scale` en contenedores, porque rompe el arrastre de Blockly.

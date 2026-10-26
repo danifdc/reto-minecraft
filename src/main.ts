@@ -1,6 +1,7 @@
 import './styles.css';
 import { Editor } from './blocks/editor';
 import { Juego } from './game/juego';
+import { cargarProgreso } from './game/progreso';
 import { NIVELES } from './levels';
 import { canvasBit } from './scene/textures';
 import { crearEscenario } from './scene/StageScene';
@@ -26,8 +27,8 @@ async function iniciar() {
   window.addEventListener('resize', ajustar);
 
   const escena = await crearEscenario(dom.escenario);
-  juego = new Juego(NIVELES, editor, escena);
-  juego.cargar(0);
+  juego = new Juego(NIVELES, editor, escena, cargarProgreso());
+  juego.iniciar();
 
   if (import.meta.env.DEV) {
     // Ganchos para las pruebas automáticas (scripts/captura.mjs). No existen en la versión publicada.

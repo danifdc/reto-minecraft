@@ -142,6 +142,6 @@ Tablero de 10×10 casillas: las que no son del camino son decoración no transit
 
 1. ✅ **Base jugable:** proyecto Vite+TS, layout 16:9, Blockly con todos los bloques, motor de ejecución (paso a paso y resaltado), escenario Phaser con gráficos provisionales y 3 niveles de prueba.
 2. ✅ **Arte y animación:** vista 3/4 con pixel art por tema (7 temas), BIT, 4 aspectos de héroe, Sombris (normal y de fuego), animaciones, partículas y recorrido del héroe con confeti.
-3. **Estructura del juego:** portada, selección de héroe, barra de niveles, contraseña, batería, localStorage y pantallas de victoria, error, pausa y final.
+3. ✅ **Estructura del juego:** portada, selección de héroe, barra de niveles, contraseña, batería, localStorage y pantallas de victoria, error, pausa y final.
 4. **Los 20 niveles:** mapas definitivos, textos y prueba de que cada nivel tiene solución.
 5. **Sonido y pulido:** efectos, aviso en móvil, ajustes finales y publicación en GitHub Pages.

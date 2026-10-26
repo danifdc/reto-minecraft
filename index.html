@@ -14,7 +14,13 @@
     <header class="barra">
       <h1 class="titulo">El Cristal <span>del Amanecer</span></h1>
       <nav id="niveles" class="niveles" aria-label="Niveles"></nav>
-      <div class="barra-der"></div>
+      <div class="barra-der">
+        <div id="bateria" class="bateria" title="Batería de BIT">
+          <span class="bateria-rayo">⚡</span>
+          <div class="bateria-cuerpo"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <button id="btn-inicio" class="btn-icono" title="Volver a la portada">⌂</button>
+      </div>
     </header>
 
     <section class="mision">
@@ -23,6 +29,7 @@
         <span id="mision-chip" class="chip"></span>
         <p id="mision-texto" class="mision-texto"></p>
       </div>
+      <span id="mision-hecho" class="sello-hecho" hidden>✔ ¡Completado!</span>
     </section>
 
     <main class="juego">
@@ -33,7 +40,7 @@
         </div>
         <div class="controles">
           <button id="btn-ejecutar" class="btn btn-ejecutar"></button>
-          <button id="btn-paso" class="btn btn-paso">⏭ Paso a paso</button>
+          <button id="btn-paso" class="btn btn-paso"><span class="btn-ico">⏭</span><span>Paso a paso</span></button>
         </div>
       </section>
 
@@ -53,6 +60,63 @@
         </div>
       </section>
     </main>
+
+    <!-- Portada -->
+    <section id="portada" class="pantalla portada">
+      <div class="portada-izq">
+        <span class="etiqueta">{ } Programa con bloques</span>
+        <h1 class="portada-titulo"><span class="t1">El Cristal</span><span class="t2">del Amanecer</span></h1>
+        <p class="portada-texto">
+          Una tormenta rompió el Cristal que iluminaba la aldea. Programa a <b>BIT</b>, tu robot ayudante,
+          para abrir el camino y recuperar los fragmentos.
+        </p>
+        <div class="elegir">
+          <span class="elegir-titulo">Elige tu héroe</span>
+          <div id="heroes" class="heroes"></div>
+        </div>
+        <div class="portada-acciones">
+          <button id="btn-jugar" class="btn btn-jugar"></button>
+          <span id="portada-progreso" class="portada-progreso"></span>
+        </div>
+        <div class="pasos">
+          <div class="paso"><b>1</b><span>Arma el código con bloques</span></div>
+          <div class="paso"><b>2</b><span>Guía a BIT hasta la meta</span></div>
+          <div class="paso"><b>3</b><span>Recupera el Cristal</span></div>
+        </div>
+      </div>
+      <div class="portada-der">
+        <div id="portada-cristal" class="portada-cristal"></div>
+        <div id="portada-escena" class="portada-escena"></div>
+      </div>
+      <button id="btn-borrar-progreso" class="link-borrar">Borrar mi progreso</button>
+    </section>
+
+    <!-- Pausa entre partes: BIT sin batería y contraseña del profesor -->
+    <section id="pausa" class="pantalla pausa" hidden>
+      <div class="tarjeta">
+        <div id="pausa-bit" class="pausa-bit"></div>
+        <div class="bateria bateria-grande vacia"><span class="bateria-rayo">⚡</span><div class="bateria-cuerpo"><i></i><i></i><i></i><i></i><i></i></div></div>
+        <h2 id="pausa-titulo"></h2>
+        <p id="pausa-texto"></p>
+        <form id="form-clave" class="form-clave" autocomplete="off">
+          <input id="clave" class="clave" type="text" maxlength="20" placeholder="Código de recarga" spellcheck="false">
+          <button class="btn btn-ejecutar" type="submit">⚡ Recargar</button>
+        </form>
+        <p id="clave-error" class="clave-error" hidden>Ese código no es correcto. Pídeselo a tu profe.</p>
+        <button id="btn-pausa-volver" class="btn-chico">◀ Volver a los niveles</button>
+      </div>
+    </section>
+
+    <!-- Final del juego -->
+    <section id="final" class="pantalla final" hidden>
+      <div class="tarjeta">
+        <div id="final-escena" class="final-escena"></div>
+        <h2>¡El amanecer volvió a la aldea!</h2>
+        <p>Gracias a tu código, BIT y tu héroe recuperaron todos los fragmentos y el Cristal del Amanecer brilla otra vez.</p>
+        <p id="final-resumen" class="final-resumen"></p>
+        <button id="btn-final-inicio" class="btn btn-ejecutar">⌂ Volver a la portada</button>
+      </div>
+    </section>
 
     <div id="dialogo" class="dialogo-fondo" hidden>
       <div class="dialogo" role="dialog" aria-modal="true">

@@ -80,18 +80,41 @@ export class Editor {
     new ResizeObserver(() => Blockly.svgResize(this.ws)).observe(div);
   }
 
-  /** Prepara el espacio de trabajo para un nivel: caja de bloques del nivel y solo "al iniciar". */
-  cargarNivel(bloques: TipoBloque[]) {
+  /**
+   * Prepara el espacio de trabajo para un nivel: caja de bloques del nivel y el código guardado
+   * (o solo "al iniciar" si no hay nada guardado).
+   */
+  cargarNivel(bloques: TipoBloque[], guardado?: object) {
     this.ws.updateToolbox(toolbox(bloques));
     this.ws.clear();
-    const inicio = this.ws.newBlock('al_iniciar');
+    if (guardado) {
+      try {
+        Blockly.serialization.workspaces.load(guardado, this.ws);
+      } catch {
+        this.ws.clear();
+      }
+    }
+    // Siempre debe haber exactamente un "al iniciar", y no se puede borrar.
+    const inicios = this.ws.getBlocksByType('al_iniciar', false);
+    inicios.slice(1).forEach((b) => b.dispose(false));
+    const inicio = inicios[0] ?? this.crearInicio();
     inicio.setDeletable(false);
-    inicio.initSvg();
-    inicio.render();
-    inicio.moveBy(30, 30);
     this.ws.scroll(0, 0);
     this.ws.clearUndo();
     this.alCambiar();
+  }
+
+  private crearInicio() {
+    const inicio = this.ws.newBlock('al_iniciar');
+    inicio.initSvg();
+    inicio.render();
+    inicio.moveBy(30, 30);
+    return inicio;
+  }
+
+  /** Estado del espacio de trabajo, para guardarlo. */
+  guardar(): object {
+    return Blockly.serialization.workspaces.save(this.ws);
   }
 
   /** Borra todos los bloques menos "al iniciar". */
