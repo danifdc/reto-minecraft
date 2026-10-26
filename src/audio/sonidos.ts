@@ -20,13 +20,13 @@ const VOLUMEN = {
   siguiente: 1.5,
 
   // ---- Espacio de trabajo
-  encajar: 3,
+  encajar: 2,
   borrar: 1.5,
 
   // ---- Ejecución
   ejecutar: 1.2,
-  paso: 3.5,
-  pasoHeroe: 3.5,
+  paso: 3,
+  pasoHeroe: 3,
   girar: 2.5,
   choque: 1.5,
   agua: 1.5,
