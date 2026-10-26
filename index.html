@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Cristal del Amanecer</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <header class="barra">
+      <h1 class="titulo">El Cristal <span>del Amanecer</span></h1>
+      <nav id="niveles" class="niveles" aria-label="Niveles"></nav>
+      <div class="barra-der"></div>
+    </header>
+
+    <section class="mision">
+      <div id="mision-icono" class="mision-icono"></div>
+      <div class="mision-cuerpo">
+        <span id="mision-chip" class="chip"></span>
+        <p id="mision-texto" class="mision-texto"></p>
+      </div>
+    </section>
+
+    <main class="juego">
+      <section class="col-escenario">
+        <div class="escenario-marco">
+          <div id="escenario" class="escenario"></div>
+          <div id="aviso" class="aviso" hidden></div>
+        </div>
+        <div class="controles">
+          <button id="btn-ejecutar" class="btn btn-ejecutar"></button>
+          <button id="btn-paso" class="btn btn-paso">⏭ Paso a paso</button>
+        </div>
+      </section>
+
+      <section class="col-codigo">
+        <div class="codigo-cabecera">
+          <div id="cab-bloques" class="cab-bloques">Bloques</div>
+          <div class="cab-trabajo">
+            <span>Espacio de trabajo</span>
+            <span id="contador" class="contador"></span>
+            <span id="candado" class="candado" hidden>🔒 Reinicia para editar</span>
+          </div>
+          <button id="btn-borrar" class="btn-chico">🗑 Borrar todo</button>
+        </div>
+        <div class="codigo-cuerpo">
+          <div id="blockly" class="blockly"></div>
+          <div id="bloqueo" class="bloqueo" hidden></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="dialogo" class="dialogo-fondo" hidden>
+      <div class="dialogo" role="dialog" aria-modal="true">
+        <div id="dialogo-icono" class="dialogo-icono"></div>
+        <h2 id="dialogo-titulo"></h2>
+        <p id="dialogo-texto"></p>
+        <p id="dialogo-extra" class="dialogo-extra"></p>
+        <div id="dialogo-botones" class="dialogo-botones"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
