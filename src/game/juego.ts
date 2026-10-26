@@ -338,13 +338,17 @@ export class Juego {
     });
   }
 
+  desbloquearParte2() {
+    this.progreso.parte2 = true;
+    this.guardar(true);
+  }
+
   private async probarClave() {
     if (!contrasenaCorrecta(dom.clave.value, CONTRASENA_PARTE2)) {
       claveIncorrecta();
       return;
     }
-    this.progreso.parte2 = true;
-    this.guardar(true);
+    this.desbloquearParte2();
     // BIT se enciende y la batería se llena rayita por rayita.
     dom.pausaBit.replaceChildren(arte.bit(9));
     const grande = dom.pausa.querySelector('.bateria-grande')!;

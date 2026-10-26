@@ -43,10 +43,10 @@ const ESTILOS: Record<Tema, Estilo> = {
   aldea: { pasto: PASTO, piso: PIEDRA_GRIS, muro: { tipo: 'ladrillo', tonos: ['#8C9099', '#7C8089', '#9CA0A8', '#5E636B'] }, sueloBase: '.', fondo: 0x2f5a23 },
   bosque: { pasto: ['#4C9634', '#3F832B', '#5AA83F', '#6BB84C'], piso: PIEDRA_GRIS, muro: { tipo: 'empedrado', tonos: ['#7A8075', '#6B7066', '#5F7A4A', '#3F443C'] }, sueloBase: '.', fondo: 0x234a1c },
   rio: { pasto: PASTO, piso: PIEDRA_GRIS, muro: { tipo: 'empedrado', tonos: ['#8A8F98', '#7B8089', '#9A9FA8', '#55595F'] }, sueloBase: '.', fondo: 0x2f5a23 },
-  cueva: { pasto: ['#3E7A30', '#336A27', '#4A8A3A', '#5A9A48'], piso: ['#5E636B', '#53575F', '#6A6F78', '#474B52'], muro: { tipo: 'empedrado', tonos: ['#4A4E57', '#40444C', '#565A63', '#2C2F35'] }, sueloBase: ':', fondo: 0x16181d },
-  mina: { pasto: ['#3E7A30', '#336A27', '#4A8A3A', '#5A9A48'], piso: ['#6E6458', '#62584D', '#7A7064', '#4E463D'], muro: { tipo: 'empedrado', tonos: ['#5C544A', '#504840', '#686056', '#2E2924'] }, sueloBase: ':', fondo: 0x1a1612 },
-  volcan: { pasto: ['#5A6A30', '#4A5A27', '#6A7A3A', '#7A8A48'], piso: ['#4A3A36', '#3E302C', '#56443F', '#2E2220'], muro: { tipo: 'empedrado', tonos: ['#2E2426', '#3A2E2F', '#262021', '#7A2416'] }, sueloBase: ':', fondo: 0x1c1012 },
-  torre: { pasto: PASTO, piso: ['#5A4E6E', '#4E4360', '#665A7A', '#3E3450'], muro: { tipo: 'ladrillo', tonos: ['#4A3F5E', '#3F3552', '#564A6A', '#2A2238'] }, sueloBase: ':', fondo: 0x171222 },
+  cueva: { pasto: ['#3E7A30', '#336A27', '#4A8A3A', '#5A9A48'], piso: ['#80858E', '#747982', '#8E939C', '#5E636B'], muro: { tipo: 'empedrado', tonos: ['#3E4249', '#353840', '#484C54', '#212328'] }, sueloBase: ':', fondo: 0x16181d },
+  mina: { pasto: ['#3E7A30', '#336A27', '#4A8A3A', '#5A9A48'], piso: ['#A08F78', '#92816C', '#AE9E86', '#6E6052'], muro: { tipo: 'empedrado', tonos: ['#4A4239', '#3F3830', '#554C42', '#211D19'] }, sueloBase: ':', fondo: 0x1a1612 },
+  volcan: { pasto: ['#5A6A30', '#4A5A27', '#6A7A3A', '#7A8A48'], piso: ['#857873', '#776B66', '#938680', '#5A4F4B'], muro: { tipo: 'empedrado', tonos: ['#2E2426', '#3A2E2F', '#262021', '#7A2416'] }, sueloBase: ':', fondo: 0x1c1012 },
+  torre: { pasto: PASTO, piso: ['#9488B0', '#8679A2', '#A296BE', '#655A80'], muro: { tipo: 'ladrillo', tonos: ['#3A3050', '#322944', '#443A5C', '#1E1830'] }, sueloBase: ':', fondo: 0x171222 },
 };
 
 export const fondoTema = (tema: Tema) => ESTILOS[tema].fondo;

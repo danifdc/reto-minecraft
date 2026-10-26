@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { NIVELES } from '../levels';
+import { NIVELES_PRUEBA as NIVELES } from '../levels/prueba';
 import { parseSolucion } from './parse';
 import type { LevelDef } from './types';
 import { World } from './world';

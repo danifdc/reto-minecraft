@@ -6,7 +6,9 @@ Nadie del equipo edita el código a mano: todos los cambios los hace Claude.
 
 ## Comandos
 - `npm run dev`: servidor en http://localhost:5173
-- `npm test`: tests del motor (vitest). Cada nivel debe ganar con su `solucion` y `ideal` debe coincidir.
+- `npm test`: tests (vitest). Para cada nivel verifican que `solucion` gana, que `ideal` es el mínimo real (resolvedor `engine/solver.ts`, búsqueda en anchura) y las reglas de progresión de `docs/PLAN.md`. Si cambias un mapa, corre los tests: el resolvedor detecta atajos.
+- `node scripts/jugar-todos.mjs [velocidad]`: juega los 20 niveles en la app real (necesita `npm run dev`). `node scripts/mosaico.mjs salida.png 1 10`: mosaico con las capturas de los niveles.
+- Si un cambio de CSS no se ve en el navegador, el watcher de Vite puede haberse perdido la escritura (pasa con `sed -i` o `cat >>` rápidos). Hay que verificar con `curl -s http://localhost:5173/src/styles.css | grep ...` y hacer `touch src/styles.css`.
 - `npm run build`: chequeo de tipos y build en `dist/` (base relativa, lista para GitHub Pages).
 - `node scripts/captura.mjs <url> <carpeta> [ancho] [alto]`: abre Chrome headless, ejecuta los pasos de la variable de entorno `PASOS` (JSON: eval, click, arrastrar, esperar, texto, foto) y guarda capturas. Úsalo para verificar cambios visuales. En dev existe `window.__debug` (cargar(n), ponerSolucion(n), ponerTexto("adelante der ..."), galeria(tema), sprites(), aspecto(n), editor, juego, escena). Para fotografiar solo el escenario usa {"foto":"x","clip":".escenario-marco"}.
 
@@ -35,7 +37,7 @@ Nadie del equipo edita el código a mano: todos los cambios los hace Claude.
     - `celebrar()` hace que el héroe recorra `world.recorrido`, con confeti.
   - `visor.ts` (solo dev: `__debug.sprites()`) muestra todos los cuadros de los personajes ampliados.
 - `levels/index.ts`:
-  - `PARTE1` y `PARTE2` (todavía con niveles de prueba).
+  - `PARTE1` y `PARTE2` (`parte1.ts`, `parte2.ts`): los 20 niveles definitivos. `prueba.ts` solo lo usan los tests de reglas del motor.
   - `INICIO_PARTE2` es el índice del primer nivel bloqueado.
   - `CONTRASENA_PARTE2 = 'recargar'`; se compara sin distinguir mayúsculas, tildes ni espacios.
 - `game/juego.ts`: controlador.

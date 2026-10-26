@@ -78,7 +78,7 @@ Tablero de 10×10 casillas: las que no son del camino son decoración no transit
 - Cada nivel introduce **como máximo 1 bloque nuevo**, y el nivel que lo introduce lo necesita de forma obvia y sin distracciones.
 - El nivel donde aparece un bloque nuevo es corto: pocos bloques y sin combinar con otros recién aprendidos.
 - El "ideal" de un nivel no sube más de 3 respecto al anterior (la excepción son los niveles de repaso 4, 7, 9 y 11, que pueden ser un poco más largos).
-- Los 3 niveles de `src/levels/prueba.ts` son solo para probar el motor y **no representan** la dificultad real: se reemplazan en la Fase 4.
+- Los 3 niveles de `src/levels/prueba.ts` solo se usan en los tests de reglas del motor; no aparecen en el juego.
 
 **Reglas visuales (por la vista 3/4):**
 - El héroe empieza **detrás de BIT y en la misma fila**: si está justo arriba o abajo, los sprites se superponen.
@@ -95,10 +95,10 @@ Tablero de 10×10 casillas: las que no son del camino son decoración no transit
 | 4 | Zigzag en el huerto | Huerto de la aldea | Zigzag entre cultivos sin pisarlos. Giros a ambos lados. | — | 7 |
 | 5 | El primer fragmento | Plaza de la aldea | Recoger el Fragmento 1 y llegar a la salida. | recoger | 8 |
 | 6 | El bosque cerrado | Entrada del bosque | Árboles caídos bloquean el sendero: romperlos. | romper adelante | 7 |
-| 7 | Chispas entre los árboles | Interior del bosque | Romper arbustos, girar y recoger 2 chispas. Combinar todo. | — | 11 |
+| 7 | Chispas entre los árboles | Interior del bosque | Romper arbustos, girar y recoger 2 chispas. Combinar todo. | — | 10 |
 | 8 | El río | Orilla del río | Construir un puente de 2 bloques para cruzar. | colocar bloque adelante | 7 |
-| 9 | Rumbo a la cueva | Río y colinas | Puente, romper rocas, girar y recoger 1 chispa. | — | 13 |
-| 10 | El corazón de la cueva | Cueva con cristales | Recoger el Fragmento 2. **Al ganar, BIT se queda sin batería** y aparece la pantalla de pausa. | — | 15 |
+| 9 | Rumbo a la cueva | Río y colinas | Puente, romper rocas, girar y recoger 1 chispa. | — | 11 |
+| 10 | El corazón de la cueva | Cueva con cristales | Recoger el Fragmento 2. **Al ganar, BIT se queda sin batería** y aparece la pantalla de pausa. | — | 14 |
 
 ### Parte 2 — Las profundidades y el volcán (requiere la contraseña)
 
@@ -106,42 +106,34 @@ Tablero de 10×10 casillas: las que no son del camino son decoración no transit
 |---|---|---|---|---|---|
 | 11 | ¡BIT recargado! | Entrada a las minas | Repaso: romper piedra, girar y llegar a la meta. | — | 9 |
 | 12 | Sombris en la mina | Túnel de la mina | Un Sombri bloquea el túnel: atacarlo. | atacar adelante | 6 |
-| 13 | Túneles oscuros | Galerías con telarañas | Atacar, romper telarañas y recoger 2 chispas. | — | 13 |
+| 13 | Túneles oscuros | Galerías con telarañas | Atacar, romper una telaraña y recoger 1 chispa. | — | 9 |
 | 14 | El lago subterráneo | Lago dentro de la cueva | Puente de 3 bloques y un Sombri del otro lado. | — | 10 |
-| 15 | El tercer fragmento | Fondo de la mina | Recoger el Fragmento 3 combinando todo. | — | 15 |
+| 15 | El tercer fragmento | Fondo de la mina | Recoger el Fragmento 3 combinando todo. | — | 13 |
 | 16 | Ríos de lava | Base del volcán | Puentes sobre lava en zigzag. | — | 13 |
 | 17 | La puerta del volcán | Entrada del volcán | Pisar una placa de presión para abrir la puerta. Recuerda al nivel 1. | — | 14 |
-| 18 | Camino de ceniza | Laderas del volcán | Secuencia larga: romper, colocar, atacar y girar. | — | 17 |
-| 19 | El cuarto fragmento | Cima del volcán | Recoger el Fragmento 4, custodiado por Sombris de fuego. | — | 17 |
-| 20 | La Torre de la Tormenta | Torre en las nubes | Llegar al altar con todo el recorrido. **Escena final:** se arma el cristal y amanece. | — | 20 |
+| 18 | Camino de ceniza | Laderas del volcán | Secuencia larga: romper, colocar, atacar y girar. | — | 16 |
+| 19 | El cuarto fragmento | Cima del volcán | Recoger el Fragmento 4, custodiado por Sombris de fuego. | — | 16 |
+| 20 | La Torre de la Tormenta | Torre en las nubes | Llegar al altar con todo el recorrido. **Escena final:** se arma el cristal y amanece. | — | 18 |
 
-### Textos de misión (borrador; se ajustan con cada mapa)
+### Textos de misión
 
-1. "¡La puerta está cerrada! Programa a BIT para que llegue a la placa de presión y la abra."
-2. "BIT quedó mirando hacia la casa. ¿Sabías que puede moverse hacia atrás sin darse vuelta? Llévalo hasta el portón."
-3. "El camino dobla en la esquina del pozo. `girar` cambia hacia dónde mira BIT, pero no lo mueve."
-4. "¡Cuidado con los cultivos! Guía a BIT por el sendero del huerto sin pisarlos."
-5. "¡Allí brilla el primer fragmento del Cristal! Lleva a BIT hasta él, usa `recoger` y sigue hasta la salida de la aldea."
-6. "La tormenta tumbó árboles en el sendero. Usa `romper adelante` para abrir paso."
-7. "El bosque está lleno de chispas de luz. Recoge las 2 y llega al claro."
-8. "BIT no sabe nadar. Usa `colocar bloque adelante` para construir un puente sobre el río."
-9. "La cueva está cerca. Cruza el arroyo, rompe las rocas y recoge la chispa del camino."
-10. "El segundo fragmento brilla en el corazón de la cueva… pero la batería de BIT está casi vacía. ¡Rápido!"
-11. "¡BIT tiene energía al máximo! Entremos a las minas."
-12. "Un Sombri bloquea el túnel. Usa `atacar adelante` para despejar el camino."
-13. "Túneles oscuros, telarañas y Sombris. Recoge las 2 chispas para iluminar la salida."
-14. "Un lago subterráneo nos corta el paso. Construye un puente y cuidado con lo que espera del otro lado."
-15. "El tercer fragmento está en lo más profundo de la mina. Usa todo lo que aprendiste."
-16. "¡Ríos de lava! Construye puentes con cuidado para llegar a la base del volcán."
-17. "La puerta del volcán se abre con una placa de presión, igual que la de tu casa. ¿Te acuerdas?"
-18. "El camino de ceniza es largo. Planifica cada paso de BIT antes de ejecutar."
-19. "Sombris de fuego custodian el cuarto fragmento. ¡Tú puedes!"
-20. "La Torre de la Tormenta. Lleva a BIT hasta el altar para devolver el Cristal del Amanecer a su lugar."
+Los textos definitivos están en `src/levels/parte1.ts` y `src/levels/parte2.ts`, junto a cada mapa.
+
+### Cómo se verifican los niveles
+
+- `npm test` comprueba, para cada nivel:
+  - que la solución de referencia gana;
+  - que el "ideal" es el **mínimo real**, con un resolvedor automático que prueba todas las combinaciones de bloques (`src/engine/solver.ts`);
+  - las reglas de progresión;
+  - que el héroe empieza al lado de BIT y en su misma fila;
+  - que los 4 fragmentos están en los niveles 5, 10, 15 y 19.
+- `node scripts/jugar-todos.mjs` juega los 20 niveles en la app real (con `npm run dev` corriendo).
+- `node scripts/mosaico.mjs salida.png 1 10` arma una imagen con los mapas, para revisarlos de un vistazo.
 
 ## Fases de desarrollo
 
 1. ✅ **Base jugable:** proyecto Vite+TS, layout 16:9, Blockly con todos los bloques, motor de ejecución (paso a paso y resaltado), escenario Phaser con gráficos provisionales y 3 niveles de prueba.
 2. ✅ **Arte y animación:** vista 3/4 con pixel art por tema (7 temas), BIT, 4 aspectos de héroe, Sombris (normal y de fuego), animaciones, partículas y recorrido del héroe con confeti.
 3. ✅ **Estructura del juego:** portada, selección de héroe, barra de niveles, contraseña, batería, localStorage y pantallas de victoria, error, pausa y final.
-4. **Los 20 niveles:** mapas definitivos, textos y prueba de que cada nivel tiene solución.
+4. ✅ **Los 20 niveles:** mapas definitivos, textos y prueba de que cada nivel tiene solución.
 5. **Sonido y pulido:** efectos, aviso en móvil, ajustes finales y publicación en GitHub Pages.

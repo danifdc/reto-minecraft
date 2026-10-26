@@ -41,6 +41,7 @@ async function iniciar() {
         editor,
         escena,
         cargar: (n: number) => juego!.cargar(n),
+        desbloquear: () => juego!.desbloquearParte2(),
         ponerSolucion: (n: number) => editor.ponerPrograma(parseSolucion(NIVELES[n].solucion)),
         ponerTexto: (t: string) => editor.ponerPrograma(parseSolucion(t)),
         galeria: (tema: string) => escena.mostrar(new World({ ...GALERIA, tema } as typeof GALERIA)),

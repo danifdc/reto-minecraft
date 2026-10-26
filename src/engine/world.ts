@@ -65,6 +65,30 @@ export class World {
     this.recorrido = [{ ...this.bit }];
   }
 
+  /** Copia independiente del estado (la usa el resolvedor para explorar programas). */
+  clonar(): World {
+    const w = Object.create(World.prototype) as World;
+    return Object.assign(w, {
+      def: this.def,
+      ancho: this.ancho,
+      alto: this.alto,
+      tiles: this.tiles.map((f) => [...f]),
+      items: new Map(this.items),
+      sombris: new Set(this.sombris),
+      meta: this.meta,
+      heroe: this.heroe,
+      bit: { ...this.bit },
+      dir: this.dir,
+      recorrido: [...this.recorrido],
+      itemsIniciales: this.itemsIniciales,
+    });
+  }
+
+  /** Clave que identifica el estado del juego (sin el recorrido). */
+  clave(): string {
+    return `${this.bit.x},${this.bit.y},${this.dir}|${this.tiles.map((f) => f.join('')).join('')}|${[...this.items.keys()].sort()}|${[...this.sombris].sort()}`;
+  }
+
   tile(p: Pos): string {
     if (p.x < 0 || p.y < 0 || p.x >= this.ancho || p.y >= this.alto) return BORDE;
     return this.tiles[p.y][p.x];

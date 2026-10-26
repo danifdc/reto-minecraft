@@ -670,3 +670,6 @@ button:disabled { cursor: not-allowed; }
   padding: calc(var(--u) * 12px) calc(var(--u) * 28px);
   font-size: calc(var(--u) * 20px);
 }
+
+/* Dentro de las tarjetas (columna) los botones no deben crecer ni achicarse. */
+.tarjeta .btn { flex: none; }
