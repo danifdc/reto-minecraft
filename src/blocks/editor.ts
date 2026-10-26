@@ -88,7 +88,7 @@ export class Editor {
 
   private sonar(e: Blockly.Events.Abstract) {
     const ahora = performance.now();
-    if (ahora < this.silencioHasta || ahora - this.ultimoSonido < 90) return;
+    if (ahora < this.silencioHasta || ahora - this.ultimoSonido < 250) return;
     if (e.type === Blockly.Events.BLOCK_MOVE && (e as Blockly.Events.BlockMove).reason?.includes('connect')) {
       sonido.encajar();
     } else if (e.type === Blockly.Events.BLOCK_DELETE) {

@@ -117,6 +117,7 @@ export class Juego {
   }
 
   private elegirHeroe(n: number) {
+    sonido.seleccionarHeroe();
     this.progreso.aspecto = n;
     this.escena.aspecto = n;
     this.guardar();
@@ -124,6 +125,7 @@ export class Juego {
   }
 
   private jugar() {
+    sonido.jugar();
     mostrarPantalla('juego');
     const n = this.progreso.nivel;
     this.cargar(n >= INICIO_PARTE2 && !this.progreso.parte2 ? 0 : n);
@@ -306,10 +308,10 @@ export class Juego {
     const ultimo = this.nivel === this.niveles.length - 1;
     const finParte1 = this.nivel === INICIO_PARTE2 - 1 && !this.progreso.parte2;
     const siguiente = ultimo
-      ? { texto: 'Continuar ▶', accion: () => this.mostrarFinal() }
+      ? { texto: 'Continuar ▶', accion: () => { sonido.siguiente(); this.mostrarFinal(); } }
       : finParte1
-        ? { texto: 'Continuar ▶', accion: () => this.terminarParte1() }
-        : { texto: 'Siguiente nivel ▶', accion: () => this.cargar(this.nivel + 1) };
+        ? { texto: 'Continuar ▶', accion: () => { sonido.siguiente(); this.terminarParte1(); } }
+        : { texto: 'Siguiente nivel ▶', accion: () => { sonido.siguiente(); this.cargar(this.nivel + 1); } };
     mostrarDialogo({
       tipo: 'gano',
       icono: arte.duo(this.progreso.aspecto, 4),

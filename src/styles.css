@@ -716,3 +716,17 @@ button:disabled { cursor: not-allowed; }
   font-weight: 800;
   font-size: 15px;
 }
+
+/* ---------- Detalles de la fuente pixel (Jersey 10) ---------- */
+/* Un poco de espacio entre letras en todos los textos con la fuente pixel. Cambiar solo este valor. */
+:root { --espaciado-pixel: .04em; }
+.titulo, .sello-hecho, .chip, .btn, .dialogo h2, .portada-titulo, .elegir-titulo, .paso b, .tarjeta h2,
+.clave, .movil h2 {
+  letter-spacing: var(--espaciado-pixel);
+}
+.clave::placeholder { letter-spacing: var(--espaciado-pixel); }
+/* El espaciado deja un hueco después de la última letra: se compensa para que el texto quede centrado. */
+.btn > span:last-child, .tarjeta h2, .dialogo h2, .movil h2 { margin-right: calc(var(--espaciado-pixel) * -1); }
+
+/* En "Paso a paso" la fuente es más chica: el ícono necesita menos ajuste para alinearse con el texto. */
+.btn-paso .btn-ico { margin-top: 0; }
