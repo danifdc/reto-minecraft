@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>El Cristal del Amanecer</title>
+  <meta name="description" content="Juego de programación por bloques para niños: programa a BIT para recuperar el Cristal del Amanecer.">
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +20,7 @@
           <span class="bateria-rayo">⚡</span>
           <div class="bateria-cuerpo"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
+        <button id="btn-sonido" class="btn-icono" title="Silenciar sonidos">🔊</button>
         <button id="btn-inicio" class="btn-icono" title="Volver a la portada">⌂</button>
       </div>
     </header>
@@ -127,6 +129,13 @@
         <div id="dialogo-botones" class="dialogo-botones"></div>
       </div>
     </div>
+  </div>
+  <!-- Aviso para celulares y tablets (el juego está pensado para computadora) -->
+  <div id="movil" class="movil" hidden>
+    <div id="movil-bit"></div>
+    <h2>¡Hola! Este juego es para computadora</h2>
+    <p>Para programar a BIT necesitas una pantalla grande y un mouse. Pídele a un adulto que lo abra en una computadora.</p>
+    <button id="btn-movil-igual">Intentar igual</button>
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>

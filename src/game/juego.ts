@@ -9,6 +9,7 @@ import {
   cerrarDialogo, claveIncorrecta, dom, mostrarAviso, mostrarBateria, mostrarContador, mostrarDialogo, mostrarHeroes,
   mostrarMision, mostrarModo, mostrarNiveles, mostrarPantalla, mostrarPausa, ocultarAviso, textoBoton, type Modo,
 } from '../ui/ui';
+import { setSilencio, sonido } from '../audio/sonidos';
 import { borrarProgreso, contrasenaCorrecta, guardarProgreso, type Progreso } from './progreso';
 
 const esperar = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -53,6 +54,21 @@ export class Juego {
     dom.btnPausaVolver.onclick = () => mostrarPantalla('juego');
     dom.btnFinalInicio.onclick = () => this.irAPortada();
     this.escena.aspecto = progreso.aspecto;
+    setSilencio(progreso.silencio);
+    this.dibujarBotonSonido();
+    dom.btnSonido.onclick = () => {
+      this.progreso.silencio = !this.progreso.silencio;
+      setSilencio(this.progreso.silencio);
+      this.guardar();
+      this.dibujarBotonSonido();
+    };
+  }
+
+  private dibujarBotonSonido() {
+    const apagado = this.progreso.silencio;
+    dom.btnSonido.textContent = apagado ? '🔇' : '🔊';
+    dom.btnSonido.title = apagado ? 'Activar sonidos' : 'Silenciar sonidos';
+    dom.btnSonido.classList.toggle('apagado', apagado);
   }
 
   private get def() {
@@ -139,6 +155,8 @@ export class Juego {
           texto: 'Sí, borrar',
           accion: () => {
             this.progreso = borrarProgreso();
+            setSilencio(false);
+            this.dibujarBotonSonido();
             this.escena.aspecto = 0;
             this.dibujarPortada();
           },
@@ -222,6 +240,7 @@ export class Juego {
 
   private async ejecutar() {
     if (!this.preparar()) return;
+    sonido.ejecutar();
     this.setModo('auto');
     const id = this.corrida;
     while (this.indice < this.programa.length) {
@@ -233,6 +252,7 @@ export class Juego {
   private async paso() {
     if (this.modo === 'editar') {
       if (!this.preparar()) return;
+      sonido.ejecutar();
       this.setModo('pasos');
     }
     if (this.modo !== 'pasos' || this.pasoOcupado) return;
@@ -275,6 +295,7 @@ export class Juego {
     this.progreso.completados[this.nivel] = antes === undefined ? usados : Math.min(antes, usados);
     this.guardar(true);
     this.dibujarEstado();
+    sonido.ganar();
     await this.escena.celebrar();
     if (id !== this.corrida) return;
 
@@ -300,6 +321,7 @@ export class Juego {
   }
 
   private dialogoFallo(mensaje: string) {
+    sonido.perder();
     mostrarDialogo({
       tipo: 'perdio',
       icono: arte.bit(4),
@@ -317,6 +339,7 @@ export class Juego {
 
   /** Al terminar la parte 1, la batería de BIT se agota y hay que esperar al profe. */
   private async terminarParte1() {
+    sonido.sinBateria();
     for (let c = this.cargaBateria(); c >= 0; c--) {
       mostrarBateria(c);
       await esperar(250);
@@ -345,10 +368,12 @@ export class Juego {
 
   private async probarClave() {
     if (!contrasenaCorrecta(dom.clave.value, CONTRASENA_PARTE2)) {
+      sonido.claveMal();
       claveIncorrecta();
       return;
     }
     this.desbloquearParte2();
+    sonido.recargar();
     // BIT se enciende y la batería se llena rayita por rayita.
     dom.pausaBit.replaceChildren(arte.bit(9));
     const grande = dom.pausa.querySelector('.bateria-grande')!;

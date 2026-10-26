@@ -1,6 +1,7 @@
 import * as Blockly from 'blockly/core';
 import * as Es from 'blockly/msg/es';
 import type { Cmd, TipoBloque } from '../engine/types';
+import { sonido } from '../audio/sonidos';
 import { bloqueACmd, registrarBloques } from './definitions';
 
 export interface PasoPrograma {
@@ -76,8 +77,28 @@ export class Editor {
     this.ws.addChangeListener(Blockly.Events.disableOrphans);
     this.ws.addChangeListener((e) => {
       if (!e.isUiEvent) this.alCambiar();
+      this.sonar(e);
     });
     new ResizeObserver(() => Blockly.svgResize(this.ws)).observe(div);
+  }
+
+  /** Hasta este momento no suenan los eventos (los que genera cargar un nivel no son del alumno). */
+  private silencioHasta = 0;
+  private ultimoSonido = 0;
+
+  private sonar(e: Blockly.Events.Abstract) {
+    const ahora = performance.now();
+    if (ahora < this.silencioHasta || ahora - this.ultimoSonido < 90) return;
+    if (e.type === Blockly.Events.BLOCK_MOVE && (e as Blockly.Events.BlockMove).reason?.includes('connect')) {
+      sonido.encajar();
+    } else if (e.type === Blockly.Events.BLOCK_DELETE) {
+      sonido.borrar();
+    } else return;
+    this.ultimoSonido = ahora;
+  }
+
+  private silenciarEventos() {
+    this.silencioHasta = performance.now() + 400;
   }
 
   /**
@@ -85,6 +106,7 @@ export class Editor {
    * (o solo "al iniciar" si no hay nada guardado).
    */
   cargarNivel(bloques: TipoBloque[], guardado?: object) {
+    this.silenciarEventos();
     this.ws.updateToolbox(toolbox(bloques));
     this.ws.clear();
     if (guardado) {
@@ -129,6 +151,7 @@ export class Editor {
 
   /** Reemplaza el programa por estos comandos (lo usan las pruebas automáticas). */
   ponerPrograma(cmds: Cmd[]) {
+    this.silenciarEventos();
     let cadena: Blockly.serialization.blocks.State | undefined;
     for (const c of [...cmds].reverse()) {
       cadena = {

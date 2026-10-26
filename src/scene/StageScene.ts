@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { sonido } from '../audio/sonidos';
 import type { Dir, GameEvent, Pos } from '../engine/types';
 import type { World } from '../engine/world';
 import type { Vista } from './arte/personajes';
@@ -281,15 +282,18 @@ export class StageScene extends Phaser.Scene {
   private async evento(e: GameEvent) {
     switch (e.t) {
       case 'move':
+        sonido.paso();
         this.polvo(e.from);
         await this.caminar(this.bit, e.from, e.to, 340);
         break;
       case 'turn':
+        sonido.girar();
         this.bit.mirar(e.to);
         await this.tw({ targets: this.bit.cont, y: this.bit.cont.y - 8, duration: 90, yoyo: true, ease: 'Quad.easeOut' });
         break;
       case 'bump':
         await this.empujon(e.from, e.at, 0.32, () => {
+          sonido.choque();
           this.cameras.main.shake(180, 0.008);
           this.destello(e.at);
           this.mareo();
@@ -298,6 +302,9 @@ export class StageScene extends Phaser.Scene {
       case 'edge': {
         const liquido = this.world.tiles[e.at.y][e.at.x];
         await this.empujon(e.from, e.at, 0.25, async () => {
+          if (liquido === '^') sonido.lava();
+          else if (liquido === '~') sonido.agua();
+          else sonido.choque();
           this.salpicar(e.at, liquido === '^' ? [0xf2a03d, 0xffd25c, 0x555555] : liquido === '~' ? [0x8fb4ff, 0xffffff, 0x3a6fd8] : [0x6b4a2b, 0x3a2a1a]);
           await this.tw({ targets: this.bit.spr, angle: 12, duration: 70, yoyo: true, repeat: 2 });
           this.bit.spr.setAngle(0);
@@ -311,14 +318,18 @@ export class StageScene extends Phaser.Scene {
         break;
       case 'attack':
         await this.empujon(e.from, e.at, 0.42, async () => {
+          sonido.atacar();
           this.tajo(e.from, e.at);
           if (e.hit) await this.vencerSombri(e.at);
         });
         break;
       case 'collect':
+        if (e.item === 'chispa') sonido.recoger();
+        else sonido.fragmento();
         await this.recoger(e.at, e.item === 'chispa' ? [0xf2c94c, 0xffffff] : [0x4fd1c5, 0xe6fffb]);
         break;
       case 'noop':
+        sonido.duda();
         await this.pregunta(e.at);
         break;
     }
@@ -380,8 +391,9 @@ export class StageScene extends Phaser.Scene {
   private async romper(p: Pos, nuevo: string) {
     const celda = this.celdas[p.y][p.x];
     const { alto, altoTile } = celda;
+    sonido.romper();
     if (alto) {
-      const grieta = this.nuevo(this.add.image(alto.x, alto.y, texGrieta(0)).setOrigin(0.5, 1).setScale(S), alto.depth + 0.1);
+      const grieta =this.nuevo(this.add.image(alto.x, alto.y, texGrieta(0)).setOrigin(0.5, 1).setScale(S), alto.depth + 0.1);
       for (let n = 0; n < 3; n++) {
         grieta.setTexture(texGrieta(n));
         await this.tw({ targets: [alto, grieta], x: alto.x + (n % 2 ? -4 : 4), duration: 60, yoyo: true });
@@ -403,6 +415,7 @@ export class StageScene extends Phaser.Scene {
     const liquido = this.celdas[p.y][p.x].suelo.getData('tile') as string;
     const bloque = this.nuevo(this.add.image(c.x, c.y - 48, texSuelo(tema, nuevo, 0)).setScale(S).setAlpha(0), PROF.fila(p.y) + PROF.alto);
     await this.tw({ targets: bloque, y: c.y, alpha: 1, duration: 240, ease: 'Quad.easeIn' });
+    sonido.colocar();
     this.ponerSuelo(p, nuevo);
     bloque.destroy();
     this.salpicar(p, liquido === '^' ? [0xf2a03d, 0xffd25c] : liquido === '~' ? [0x8fb4ff, 0xffffff] : [0x9c7a4e, 0x6b4a2b]);
@@ -413,6 +426,7 @@ export class StageScene extends Phaser.Scene {
   private async abrir(p: Pos, nuevo: string) {
     const celda = this.celdas[p.y][p.x];
     const puerta = celda.alto;
+    sonido.puerta();
     if (puerta) {
       await this.tw({ targets: puerta, scaleX: 0.4, alpha: 0, duration: 260, ease: 'Quad.easeIn' });
       puerta.destroy();
@@ -438,6 +452,7 @@ export class StageScene extends Phaser.Scene {
     if (!img) return;
     this.tweens.killTweensOf(img);
     img.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
+    sonido.vencer();
     await this.esperar(80);
     this.particulas(p, [0x4b2c78, 0x7a55b8, 0xff4fd8, 0x1a0f2a], 22, 46);
     await this.tw({ targets: img, scaleX: 0, scaleY: S * 1.4, alpha: 0, duration: 220, ease: 'Back.easeIn' });
@@ -535,6 +550,7 @@ export class StageScene extends Phaser.Scene {
     // El héroe se detiene una casilla antes que BIT para no quedar encima.
     for (let i = 1; i < camino.length - 1; i++) {
       this.heroe.mirar(dirEntre(camino[i - 1], camino[i]));
+      sonido.pasoHeroe();
       await this.caminar(this.heroe, camino[i - 1], camino[i], 200);
     }
     this.heroe.mirar(2);

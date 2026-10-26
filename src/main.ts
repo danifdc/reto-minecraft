@@ -10,7 +10,31 @@ import { dom } from './ui/ui';
 const ANCHO = 1920;
 const ALTO = 1080;
 
+/** Celulares y tablets: pantalla táctil sin mouse, o pantalla muy chica. */
+function esDispositivoMovil(): boolean {
+  const tactilSinMouse = matchMedia('(pointer: coarse)').matches && !matchMedia('(any-pointer: fine)').matches;
+  return tactilSinMouse || Math.min(screen.width, screen.height) < 600;
+}
+
+function avisoMovil() {
+  if (!esDispositivoMovil()) return;
+  const aviso = document.getElementById('movil')!;
+  document.getElementById('movil-bit')!.append(canvasBit());
+  aviso.hidden = false;
+  document.getElementById('btn-movil-igual')!.onclick = () => (aviso.hidden = true);
+}
+
+/** BIT como ícono de la pestaña. */
+function favicon() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 20;
+  c.getContext('2d')!.drawImage(canvasBit(), 2, 0);
+  document.querySelector<HTMLLinkElement>('link[rel=icon]')!.href = c.toDataURL();
+}
+
 async function iniciar() {
+  avisoMovil();
+  favicon();
   dom.misionIcono.append(canvasBit());
 
   let juego: Juego | null = null;

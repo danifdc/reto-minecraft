@@ -300,7 +300,6 @@ button:disabled { cursor: not-allowed; }
   line-height: 1;
   margin-top: calc(var(--u) * 5px);
 }
-.btn:active:not(:disabled) { transform: translateY(calc(var(--u) * 4px)); }
 .btn:disabled { filter: grayscale(.8) brightness(.7); }
 .btn-ejecutar {
   flex: 1.6;
@@ -673,3 +672,47 @@ button:disabled { cursor: not-allowed; }
 
 /* Dentro de las tarjetas (columna) los botones no deben crecer ni achicarse. */
 .tarjeta .btn { flex: none; }
+
+/* ---------- Efecto al pasar el mouse por los botones ----------
+   Se levantan un poco y se iluminan; al hacer clic, se hunden. (Los bloques de Blockly no se tocan.) */
+.btn, .btn-chico, .btn-icono, .link-borrar {
+  transition: transform .12s ease-out, filter .15s, border-color .15s, color .15s;
+}
+.btn:hover:not(:disabled) { transform: translateY(calc(var(--u) * -3px)); filter: brightness(1.08); }
+.btn:active:not(:disabled) { transform: translateY(calc(var(--u) * 3px)); filter: brightness(.95); }
+.btn-chico:hover:not(:disabled), .btn-icono:hover { transform: translateY(calc(var(--u) * -2px)); }
+.btn-chico:active:not(:disabled), .btn-icono:active { transform: translateY(calc(var(--u) * 1px)); }
+.link-borrar:hover { transform: translateY(calc(var(--u) * -2px)); }
+.nivel-btn.actual:hover { transform: scale(1.12) translateY(calc(var(--u) * -2px)); }
+.btn-icono.apagado { opacity: .55; }
+
+/* ---------- Aviso en celulares y tablets ----------
+   Va fuera de #app y no usa --u: debe verse bien en cualquier pantalla. */
+.movil {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  background: radial-gradient(circle at 50% 40%, #2A3556 0%, #12151B 80%);
+  color: var(--texto);
+  text-align: center;
+}
+.movil[hidden] { display: none; }
+.movil canvas { width: 96px; height: 120px; image-rendering: pixelated; }
+.movil h2 { margin: 0; font-family: var(--fuente-pixel); font-weight: 400; font-size: 40px; line-height: 1; color: var(--oro); }
+.movil p { margin: 0; max-width: 420px; font-size: 18px; font-weight: 800; line-height: 1.4; }
+.movil button {
+  margin-top: 8px;
+  padding: 10px 18px;
+  border: 2px solid var(--borde);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--texto-suave);
+  font-weight: 800;
+  font-size: 15px;
+}

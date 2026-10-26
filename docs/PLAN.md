@@ -136,4 +136,4 @@ Los textos definitivos están en `src/levels/parte1.ts` y `src/levels/parte2.ts`
 2. ✅ **Arte y animación:** vista 3/4 con pixel art por tema (7 temas), BIT, 4 aspectos de héroe, Sombris (normal y de fuego), animaciones, partículas y recorrido del héroe con confeti.
 3. ✅ **Estructura del juego:** portada, selección de héroe, barra de niveles, contraseña, batería, localStorage y pantallas de victoria, error, pausa y final.
 4. ✅ **Los 20 niveles:** mapas definitivos, textos y prueba de que cada nivel tiene solución.
-5. **Sonido y pulido:** efectos, aviso en móvil, ajustes finales y publicación en GitHub Pages.
+5. ✅ **Sonido y pulido:** efectos de sonido con botón para silenciar, aviso en celulares, efecto al pasar el mouse por los botones, ícono de BIT en la pestaña y publicación automática en GitHub Pages.

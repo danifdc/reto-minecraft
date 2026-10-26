@@ -20,10 +20,12 @@ export interface Progreso {
   parte2: boolean;
   /** Ya se mostró la introducción de la historia. */
   prologo: boolean;
+  /** Sonidos apagados. */
+  silencio: boolean;
 }
 
 const nuevo = (): Progreso => ({
-  version: VERSION, aspecto: 0, nivel: 0, completados: {}, codigo: {}, parte2: false, prologo: false,
+  version: VERSION, aspecto: 0, nivel: 0, completados: {}, codigo: {}, parte2: false, prologo: false, silencio: false,
 });
 
 export function cargarProgreso(): Progreso {

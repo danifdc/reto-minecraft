@@ -11,6 +11,7 @@ export const dom = {
   niveles: $('niveles'),
   bateria: $('bateria'),
   btnInicio: $<HTMLButtonElement>('btn-inicio'),
+  btnSonido: $<HTMLButtonElement>('btn-sonido'),
   misionIcono: $('mision-icono'),
   misionChip: $('mision-chip'),
   misionTexto: $('mision-texto'),
