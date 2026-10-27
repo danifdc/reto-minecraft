@@ -100,6 +100,8 @@ export class StageScene extends Phaser.Scene {
   private pendientes = new Set<() => void>();
   private cuadroAmbiente = 0;
   velocidad = 1;
+  /** Cambia al cancelar o redibujar: las animaciones en curso del nivel anterior se detienen. */
+  private generacion = 0;
   /** Aspecto del héroe elegido por el alumno (0 a 3). */
   aspecto = 0;
 
@@ -192,7 +194,7 @@ export class StageScene extends Phaser.Scene {
   private crearCelda(p: Pos, tile: string): Celda {
     const tema = this.world.def.tema;
     const c = this.centro(p);
-    const plano = ALTOS.has(tile) ? sueloBajo(tile, tema) : tile;
+    const plano = ALTOS.has(tile) ? sueloBajo(tile, tema, this.world.vecinos(p)) : tile;
     const suelo = this.nuevo(this.add.image(c.x, c.y, texSuelo(tema, plano, variante(plano, p.x, p.y))).setScale(S), PROF.suelo);
     suelo.setData('tile', plano);
     const celda: Celda = { suelo };
@@ -246,6 +248,7 @@ export class StageScene extends Phaser.Scene {
 
   /** Detiene todas las animaciones (al reiniciar). */
   cancelar() {
+    this.generacion++;
     this.tweens.killAll();
     this.time.removeAllEvents();
     for (const fin of [...this.pendientes]) fin();
@@ -276,7 +279,11 @@ export class StageScene extends Phaser.Scene {
   // ---------------------------------------------------------------- eventos
 
   async animar(eventos: GameEvent[]) {
-    for (const e of eventos) await this.evento(e);
+    const gen = this.generacion;
+    for (const e of eventos) {
+      if (gen !== this.generacion) return;
+      await this.evento(e);
+    }
   }
 
   private async evento(e: GameEvent) {
@@ -546,13 +553,16 @@ export class StageScene extends Phaser.Scene {
 
   /** El héroe recorre el camino de BIT y ambos festejan. */
   async celebrar() {
+    const gen = this.generacion;
     const camino = [this.world.heroe, ...this.world.recorrido];
     // El héroe se detiene una casilla antes que BIT para no quedar encima.
     for (let i = 1; i < camino.length - 1; i++) {
+      if (gen !== this.generacion) return;
       this.heroe.mirar(dirEntre(camino[i - 1], camino[i]));
       sonido.pasoHeroe();
       await this.caminar(this.heroe, camino[i - 1], camino[i], 200);
     }
+    if (gen !== this.generacion) return;
     this.heroe.mirar(2);
     this.bit.mirar(2);
     this.confeti();

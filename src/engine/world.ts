@@ -1,5 +1,5 @@
 import {
-  BORDE, PLACA, PUENTE, PUERTA_ABIERTA, PUERTA_CERRADA, info,
+  BORDE, PLACA, PUENTE, PUERTA_ABIERTA, PUERTA_CERRADA, info, sueloDebajo,
 } from './tiles';
 import {
   DIR_POR_NOMBRE, DX, DY,
@@ -89,6 +89,11 @@ export class World {
     return `${this.bit.x},${this.bit.y},${this.dir}|${this.tiles.map((f) => f.join('')).join('')}|${[...this.items.keys()].sort()}|${[...this.sombris].sort()}`;
   }
 
+  /** Las 4 casillas de alrededor de p. */
+  vecinos(p: Pos): string[] {
+    return [0, 1, 2, 3].map((d) => this.tile({ x: p.x + DX[d], y: p.y + DY[d] }));
+  }
+
   tile(p: Pos): string {
     if (p.x < 0 || p.y < 0 || p.x >= this.ancho || p.y >= this.alto) return BORDE;
     return this.tiles[p.y][p.x];
@@ -159,8 +164,9 @@ export class World {
     if (t.clase !== 'rompible' || !t.alRomper) {
       return { events: [{ t: 'noop', at: this.bit }], aviso: 'No hay nada para romper adelante de BIT.' };
     }
-    this.tiles[at.y][at.x] = t.alRomper;
-    return { events: [{ t: 'tile', at, tile: t.alRomper, anim: 'break' }] };
+    const nuevo = sueloDebajo(this.tile(at), this.vecinos(at)) ?? t.alRomper;
+    this.tiles[at.y][at.x] = nuevo;
+    return { events: [{ t: 'tile', at, tile: nuevo, anim: 'break' }] };
   }
 
   private colocar(): StepResult {

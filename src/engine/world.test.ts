@@ -74,4 +74,11 @@ describe('reglas', () => {
     expect(w.recorrido).toHaveLength(7);
     expect(w.recorrido.at(-1)).toEqual(w.meta);
   });
+
+  it('un arbusto en un sendero deja tierra de camino; uno sobre el césped deja césped', async () => {
+    const { sueloDebajo } = await import('./tiles');
+    expect(sueloDebajo('A', ['.', ',', 'T', 'T'])).toBe(',');
+    expect(sueloDebajo('A', ['.', '.', 'T', 'T'])).toBe('.');
+    expect(sueloDebajo('T', [',', ',', ',', ','])).toBe('.');
+  });
 });

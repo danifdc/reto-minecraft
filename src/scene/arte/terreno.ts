@@ -1,7 +1,7 @@
-import { info } from '../../engine/tiles';
+import { info, sueloDebajo } from '../../engine/tiles';
 import type { Tema } from '../../engine/types';
 import {
-  PX, azar, empedrado, ladrillos, px, rect, ruido, tablas, type Ctx, type Region,
+  PX, azar, dibujar, empedrado, ladrillos, px, rect, ruido, tablas, type Ctx, type Paleta, type Region,
 } from '../pixel';
 
 /**
@@ -52,10 +52,10 @@ const ESTILOS: Record<Tema, Estilo> = {
 export const fondoTema = (tema: Tema) => ESTILOS[tema].fondo;
 
 /** Casilla plana que hay debajo de una casilla alta. */
-export function sueloBajo(tile: string, tema: Tema): string {
+export function sueloBajo(tile: string, tema: Tema, vecinos: string[] = []): string {
   if (tile === 'D') return 'd';
   const t = info(tile);
-  if (t.clase === 'rompible' && t.alRomper) return t.alRomper;
+  if (t.clase === 'rompible') return sueloDebajo(tile, vecinos) ?? ESTILOS[tema].sueloBase;
   return ESTILOS[tema].sueloBase;
 }
 
@@ -239,6 +239,31 @@ const HOJAS: Tonos = ['#2E7D32', '#1F5C24', '#3E9A42', '#5DBB3F'];
 const HOJAS_BOSQUE: Tonos = ['#25692A', '#18491C', '#327F36', '#4CA046'];
 const MADERA_MURO: Tonos = ['#9A6A3C', '#8A5A32', '#AA7A48', '#6B4426'];
 
+/** Arbusto de 16×20, apoyado en la base de la casilla. o = contorno, l = luz, g = hoja, d = sombra, r = baya. */
+const ARBUSTO = [
+  '................',
+  '................',
+  '................',
+  '................',
+  '......oooo......',
+  '....oollllgoo...',
+  '...ollllllllgo..',
+  '..olllrlllllggo.',
+  '..ollllllgggggo.',
+  '.ollllllgggrggdo',
+  '.olllrllgggggddo',
+  '.ollllllgggggddo',
+  '.olllllggggrgddo',
+  '.oglllggggggddo.',
+  '..ogggggggrgddo.',
+  '..oggggggggdddo.',
+  '...odggggggddo..',
+  '....oddddddddo..',
+  '.....oooooooo...',
+  '................',
+];
+const PALETA_ARBUSTO: Paleta = { o: '#14401A', l: '#9BEA52', g: '#55C03C', d: '#2F8A2E', r: '#E8423A' };
+
 /** Recorta las esquinas para que el follaje se vea redondeado. */
 function redondear(c: Ctx, r: Region) {
   for (const [x, y] of [[r.x, r.y], [r.x + r.w - 1, r.y], [r.x, r.y + r.h - 1], [r.x + r.w - 1, r.y + r.h - 1]]) c.clearRect(x, y, 1, 1);
@@ -302,13 +327,9 @@ export function pintarAlto(c: Ctx, tile: string, tema: Tema) {
       return;
     }
     case 'A': {
-      // Arbusto: bola de hojas más chica, sin tronco.
-      const tapa = { x: 2, y: 5, w: 12, h: 8 };
-      const frente = { x: 2, y: 13, w: 12, h: 4 };
-      hojas(c, tapa, ['#3E9A42', '#2E7D32', '#5DBB3F', '#7BD458'], 40);
-      hojas(c, frente, ['#2E7D32', '#1F5C24', '#3E9A42', '#3E9A42'], 41);
-      redondear(c, { x: 2, y: 5, w: 12, h: 12 });
-      for (const [x, y] of [[5, 7], [10, 9], [7, 11]]) px(c, x, y, '#E8574A');
+      // Arbusto con bayas: contorno oscuro y verde lima brillante, para que no se confunda con el suelo
+      // ni con los árboles (que son de un verde más oscuro).
+      dibujar(c, ARBUSTO, PALETA_ARBUSTO);
       return;
     }
     case 'C': {
@@ -363,7 +384,7 @@ export function pintarAlto(c: Ctx, tile: string, tema: Tema) {
 /** Color representativo de cada casilla rompible (para las partículas al romperla). */
 export const COLORES_ROTURA: Record<string, number[]> = {
   T: [0x2e7d32, 0x3e9a42, 0x6b4426],
-  A: [0x3e9a42, 0x5dbb3f, 0xe8574a],
+  A: [0x55c03c, 0x9bea52, 0xe8423a],
   P: [0xa7abb2, 0x6e737b, 0xb8bcc2],
   Z: [0xeeeeee, 0xcccccc],
 };

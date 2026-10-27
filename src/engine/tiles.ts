@@ -55,6 +55,17 @@ export const PLACA = '+';
 export const PUERTA_CERRADA = 'D';
 export const PUERTA_ABIERTA = 'd';
 
+/**
+ * Casilla que queda al romper (o que hay debajo de) un bloque rompible. Un arbusto que está en un sendero
+ * (tiene un camino al lado) deja tierra de camino; en cualquier otro lugar deja césped.
+ * "vecinos" son las 4 casillas de alrededor.
+ */
+export function sueloDebajo(tile: string, vecinos: string[]): string | undefined {
+  const alRomper = TILES[tile]?.alRomper;
+  if (tile === 'A' && vecinos.includes(',')) return ',';
+  return alRomper;
+}
+
 export function info(tile: string): TileInfo {
   const t = TILES[tile];
   if (!t) throw new Error(`Casilla desconocida: "${tile}"`);
