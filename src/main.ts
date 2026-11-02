@@ -5,6 +5,7 @@ import { cargarProgreso } from './game/progreso';
 import { NIVELES } from './levels';
 import { canvasBit, canvasFragmento } from './scene/textures';
 import { crearEscenario } from './scene/StageScene';
+import { ponerIconos } from './ui/iconos';
 import { dom } from './ui/ui';
 
 const ANCHO = 1920;
@@ -49,6 +50,7 @@ function favicon() {
 }
 
 async function iniciar() {
+  ponerIconos();
   avisoMovil();
   favicon();
   dom.misionIcono.append(canvasBit());

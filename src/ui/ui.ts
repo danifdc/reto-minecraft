@@ -1,4 +1,5 @@
 /** Acceso al DOM de la interfaz. El controlador del juego solo habla con la UI a través de este módulo. */
+import { icono, textoConIconos, type NombreIcono } from './iconos';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => {
   const el = document.getElementById(id);
@@ -54,10 +55,10 @@ export const dom = {
 export type Modo = 'editar' | 'auto' | 'pasos' | 'fin';
 
 /** Texto de botón con el ícono separado (las fuentes pixel desalinean los símbolos). */
-export function textoBoton(btn: HTMLElement, icono: string, texto: string) {
+export function textoBoton(btn: HTMLElement, nombre: NombreIcono, texto: string) {
   const i = document.createElement('span');
   i.className = 'btn-ico';
-  i.textContent = icono;
+  i.append(icono(nombre));
   const t = document.createElement('span');
   t.textContent = texto;
   btn.replaceChildren(i, t);
@@ -65,7 +66,7 @@ export function textoBoton(btn: HTMLElement, icono: string, texto: string) {
 
 export function mostrarModo(modo: Modo, pasoOcupado = false) {
   const editando = modo === 'editar';
-  textoBoton(dom.btnEjecutar, editando ? '▶' : '↺', editando ? 'Ejecutar' : 'Reiniciar');
+  textoBoton(dom.btnEjecutar, editando ? 'play' : 'reiniciar', editando ? 'Ejecutar' : 'Reiniciar');
   dom.btnEjecutar.classList.toggle('reiniciar', !editando);
   dom.btnPaso.disabled = modo === 'auto' || modo === 'fin' || pasoOcupado;
   dom.btnBorrar.disabled = !editando;
@@ -103,7 +104,7 @@ export function mostrarNiveles(e: EstadoNiveles, ir: (n: number) => void) {
   };
   const separador = document.createElement('span');
   separador.className = `separador-partes${e.parte2 ? ' abierto' : ''}`;
-  separador.textContent = e.parte2 ? '⚡' : '🔒';
+  separador.replaceChildren(icono(e.parte2 ? 'rayo' : 'candado'));
   separador.title = e.parte2 ? 'Parte 2 desbloqueada' : 'La Parte 2 se desbloquea con el código de tu profe';
 
   const items: HTMLElement[] = [];
@@ -156,13 +157,13 @@ export function mostrarDialogo(o: {
   caja.className = `dialogo ${o.tipo}`;
   $('dialogo-icono').replaceChildren(o.icono);
   $('dialogo-titulo').textContent = o.titulo;
-  $('dialogo-texto').textContent = o.texto;
-  $('dialogo-extra').textContent = o.extra ?? '';
+  $('dialogo-texto').replaceChildren(...textoConIconos(o.texto));
+  $('dialogo-extra').replaceChildren(...textoConIconos(o.extra ?? ''));
   $('dialogo-botones').replaceChildren(
     ...o.botones.map((b) => {
       const el = document.createElement('button');
       el.className = `btn ${b.secundario ? 'btn-secundario' : 'btn-ejecutar'}`;
-      el.textContent = b.texto;
+      el.replaceChildren(...textoConIconos(b.texto));
       el.onclick = () => {
         cerrarDialogo();
         b.accion();

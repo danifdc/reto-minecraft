@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "blockly": "^13.4.0",
-    "phaser": "^4.2.1"
+    "phaser": "^4.2.1",
+    "pixelarticons": "^2.4.2"
   },
   "devDependencies": {
     "puppeteer-core": "^25.16.0",

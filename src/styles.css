@@ -739,3 +739,14 @@ button:disabled { cursor: not-allowed; }
 
 /* En "Paso a paso" la fuente es más chica: el ícono necesita menos ajuste para alinearse con el texto. */
 .btn-paso .btn-ico { margin-top: 0; }
+
+/* ---------- Íconos (Pixelarticons, ver ui/iconos.ts): miden 1em y toman el color del texto ---------- */
+.ico { display: inline-block; flex: none; width: 1em; height: 1em; vertical-align: -.14em; shape-rendering: crispEdges; }
+i[data-icono] { display: inline-flex; font-style: normal; }
+.btn-icono { display: grid; place-items: center; }
+.btn-icono .ico { width: 1.2em; height: 1.2em; }
+.btn-ico { display: inline-flex; }
+.btn .btn-ico .ico { width: 1.3em; height: 1.3em; }
+.bateria-rayo { display: inline-flex; color: var(--oro); }
+.separador-partes { display: inline-grid; place-items: center; }
+.ico-estrella { color: var(--oro); }

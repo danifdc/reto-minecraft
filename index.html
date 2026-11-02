@@ -31,11 +31,11 @@
       <nav id="niveles" class="niveles" aria-label="Niveles"></nav>
       <div class="barra-der">
         <div id="bateria" class="bateria" title="Batería de BIT">
-          <span class="bateria-rayo">⚡</span>
+          <span class="bateria-rayo" data-icono="rayo"></span>
           <div class="bateria-cuerpo"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-        <button id="btn-sonido" class="btn-icono" title="Silenciar sonidos">🔊</button>
-        <button id="btn-inicio" class="btn-icono" title="Volver a la portada">⌂</button>
+        <button id="btn-sonido" class="btn-icono" title="Silenciar sonidos"></button>
+        <button id="btn-inicio" class="btn-icono" title="Volver a la portada"><i data-icono="casa"></i></button>
       </div>
     </header>
 
@@ -45,7 +45,7 @@
         <span id="mision-chip" class="chip"></span>
         <p id="mision-texto" class="mision-texto"></p>
       </div>
-      <span id="mision-hecho" class="sello-hecho" hidden>✔ ¡Completado!</span>
+      <span id="mision-hecho" class="sello-hecho" hidden><i data-icono="check"></i> ¡Completado!</span>
     </section>
 
     <main class="juego">
@@ -56,7 +56,7 @@
         </div>
         <div class="controles">
           <button id="btn-ejecutar" class="btn btn-ejecutar"></button>
-          <button id="btn-paso" class="btn btn-paso"><span class="btn-ico">⏭</span><span>Paso a paso</span></button>
+          <button id="btn-paso" class="btn btn-paso"><span class="btn-ico" data-icono="paso"></span><span>Paso a paso</span></button>
         </div>
       </section>
 
@@ -66,9 +66,9 @@
           <div class="cab-trabajo">
             <span>Espacio de trabajo</span>
             <span id="contador" class="contador"></span>
-            <span id="candado" class="candado" hidden>🔒 Reinicia para editar</span>
+            <span id="candado" class="candado" hidden><i data-icono="candado"></i> Reinicia para editar</span>
           </div>
-          <button id="btn-borrar" class="btn-chico">🗑 Borrar todo</button>
+          <button id="btn-borrar" class="btn-chico"><i data-icono="papelera"></i> Borrar todo</button>
         </div>
         <div class="codigo-cuerpo">
           <div id="blockly" class="blockly"></div>
@@ -111,15 +111,15 @@
     <section id="pausa" class="pantalla pausa" hidden>
       <div class="tarjeta">
         <div id="pausa-bit" class="pausa-bit"></div>
-        <div class="bateria bateria-grande vacia"><span class="bateria-rayo">⚡</span><div class="bateria-cuerpo"><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="bateria bateria-grande vacia"><span class="bateria-rayo" data-icono="rayo"></span><div class="bateria-cuerpo"><i></i><i></i><i></i><i></i><i></i></div></div>
         <h2 id="pausa-titulo"></h2>
         <p id="pausa-texto"></p>
         <form id="form-clave" class="form-clave" autocomplete="off">
           <input id="clave" class="clave" type="text" maxlength="20" placeholder="Código de recarga" spellcheck="false">
-          <button class="btn btn-ejecutar" type="submit">⚡ Recargar</button>
+          <button class="btn btn-ejecutar" type="submit"><span class="btn-ico" data-icono="rayo"></span><span>Recargar</span></button>
         </form>
         <p id="clave-error" class="clave-error" hidden>Ese código no es correcto. Pídeselo a tu profe.</p>
-        <button id="btn-pausa-volver" class="btn-chico">◀ Volver a los niveles</button>
+        <button id="btn-pausa-volver" class="btn-chico"><i data-icono="atras"></i> Volver a los niveles</button>
       </div>
     </section>
 
@@ -130,7 +130,7 @@
         <h2>¡El amanecer volvió a la aldea!</h2>
         <p>Gracias a tu código, BIT y tu héroe recuperaron todos los fragmentos y el Cristal del Amanecer brilla otra vez.</p>
         <p id="final-resumen" class="final-resumen"></p>
-        <button id="btn-final-inicio" class="btn btn-ejecutar">⌂ Volver a la portada</button>
+        <button id="btn-final-inicio" class="btn btn-ejecutar"><span class="btn-ico" data-icono="casa"></span><span>Volver a la portada</span></button>
       </div>
     </section>
 

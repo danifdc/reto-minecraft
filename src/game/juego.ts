@@ -5,6 +5,7 @@ import { CONTRASENA_PARTE2, INICIO_PARTE2 } from '../levels';
 import { ASPECTOS } from '../scene/arte/personajes';
 import type { StageScene } from '../scene/StageScene';
 import * as arte from '../ui/arte';
+import { icono, textoConIconos } from '../ui/iconos';
 import {
   cerrarDialogo, claveIncorrecta, dom, mostrarAviso, mostrarBateria, mostrarContador, mostrarDialogo, mostrarHeroes,
   mostrarMision, mostrarModo, mostrarNiveles, mostrarPantalla, mostrarPausa, ocultarAviso, textoBoton, type Modo,
@@ -66,7 +67,7 @@ export class Juego {
 
   private dibujarBotonSonido() {
     const apagado = this.progreso.silencio;
-    dom.btnSonido.textContent = apagado ? '🔇' : '🔊';
+    dom.btnSonido.replaceChildren(icono(apagado ? 'silencio' : 'sonido'));
     dom.btnSonido.title = apagado ? 'Activar sonidos' : 'Silenciar sonidos';
     dom.btnSonido.classList.toggle('apagado', apagado);
   }
@@ -111,7 +112,7 @@ export class Juego {
     dom.portadaCristal.replaceChildren(arte.fragmento(7));
     const hechos = this.hechos.size;
     const empezado = hechos > 0 || this.progreso.nivel > 0;
-    textoBoton(dom.btnJugar, '▶', empezado ? 'Continuar' : 'Jugar');
+    textoBoton(dom.btnJugar, 'play', empezado ? 'Continuar' : 'Jugar');
     dom.portadaProgreso.textContent = empezado ? `Llevas ${hechos} de ${this.niveles.length} misiones` : '';
     dom.btnBorrarProgreso.hidden = !empezado;
   }
@@ -303,15 +304,15 @@ export class Juego {
 
     const { ideal } = this.def;
     const extra = usados <= ideal
-      ? `¡Usaste ${usados} bloques: la solución ideal! ⭐`
+      ? `¡Usaste ${usados} bloques: la solución ideal! {estrella}`
       : `Usaste ${usados} bloques. La solución ideal usa ${ideal}. ¿Te animas a mejorarla?`;
     const ultimo = this.nivel === this.niveles.length - 1;
     const finParte1 = this.nivel === INICIO_PARTE2 - 1 && !this.progreso.parte2;
     const siguiente = ultimo
-      ? { texto: 'Continuar ▶', accion: () => { sonido.siguiente(); this.mostrarFinal(); } }
+      ? { texto: 'Continuar {play}', accion: () => { sonido.siguiente(); this.mostrarFinal(); } }
       : finParte1
-        ? { texto: 'Continuar ▶', accion: () => { sonido.siguiente(); this.terminarParte1(); } }
-        : { texto: 'Siguiente nivel ▶', accion: () => { sonido.siguiente(); this.cargar(this.nivel + 1); } };
+        ? { texto: 'Continuar {play}', accion: () => { sonido.siguiente(); this.terminarParte1(); } }
+        : { texto: 'Siguiente nivel {play}', accion: () => { sonido.siguiente(); this.cargar(this.nivel + 1); } };
     mostrarDialogo({
       tipo: 'gano',
       icono: arte.duo(this.progreso.aspecto, 4),
@@ -332,7 +333,7 @@ export class Juego {
       extra: 'El bloque resaltado en el código es donde BIT se detuvo.',
       botones: [
         { texto: 'Ver mi código', secundario: true, accion: () => {} },
-        { texto: '↺ Intentar de nuevo', accion: () => this.reiniciar() },
+        { texto: '{reiniciar} Intentar de nuevo', accion: () => this.reiniciar() },
       ],
     });
   }
@@ -401,9 +402,9 @@ export class Juego {
     dom.finalEscena.replaceChildren(escena);
     const hechos = this.hechos.size;
     const total = this.niveles.length;
-    dom.finalResumen.textContent = hechos === total
-      ? `¡Completaste las ${total} misiones! ⭐`
-      : `Completaste ${hechos} de ${total} misiones. Puedes volver a las que te faltan desde la barra de niveles.`;
+    dom.finalResumen.replaceChildren(...textoConIconos(hechos === total
+      ? `¡Completaste las ${total} misiones! {estrella}`
+      : `Completaste ${hechos} de ${total} misiones. Puedes volver a las que te faltan desde la barra de niveles.`));
     mostrarPantalla('final');
   }
 }
