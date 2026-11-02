@@ -136,7 +136,7 @@ button:disabled { cursor: not-allowed; }
   align-items: center;
   gap: calc(var(--u) * 6px);
 }
-.bateria-rayo { font-size: calc(var(--u) * 22px); }
+.bateria-rayo { font-size: calc(var(--u) * 28px); }
 .bateria-cuerpo {
   position: relative;
   display: flex;
@@ -744,7 +744,7 @@ button:disabled { cursor: not-allowed; }
 .ico { display: inline-block; flex: none; width: 1em; height: 1em; vertical-align: -.14em; shape-rendering: crispEdges; }
 i[data-icono] { display: inline-flex; font-style: normal; }
 .btn-icono { display: grid; place-items: center; }
-.btn-icono .ico { width: 1.2em; height: 1.2em; }
+.btn-icono .ico { width: .92em; height: .92em; }
 .btn-ico { display: inline-flex; }
 .btn .btn-ico .ico { width: 1.3em; height: 1.3em; }
 .bateria-rayo { display: inline-flex; color: var(--oro); }
