@@ -26,7 +26,7 @@ const VOLUMEN = {
   // ---- Ejecución
   ejecutar: 1.2,
   paso: 3,
-  pasoHeroe: 3,
+  pasoHeroe: 2,
   girar: 2.5,
   choque: 1.5,
   agua: 1.5,
@@ -148,10 +148,8 @@ const con = (nombre: NombreSonido, fn: () => void) => () => {
 
 export const sonido = {
   // ---- Interfaz
-  seleccionarHeroe: con('seleccionarHeroe', () => {
-    tono(N.E5, N.E5, 0.07, 'square', 0.06);
-    tono(N.A4 * 2, N.A4 * 2, 0.1, 'square', 0.06, 0.07);
-  }),
+  /** Elegir un héroe en la portada (el mismo "bip" que usa el simulador al elegir personaje). */
+  seleccionarHeroe: con('seleccionarHeroe', () => tono(880, 1180, 0.05, 'sine', 0.06)),
   jugar: con('jugar', () => {
     [N.C5, N.E5, N.G5, N.C6].forEach((f, i) => tono(f, f, 0.09, 'square', 0.06, i * 0.07));
   }),

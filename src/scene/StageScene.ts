@@ -44,6 +44,9 @@ interface Celda {
   sombra?: Img;
 }
 
+/** Cuadros al caminar una casilla: un pie, parado, el otro pie, parado. */
+const CICLO_PASO = [1, 0, 2, 0];
+
 const key = (p: Pos) => `${p.x},${p.y}`;
 
 /** Un personaje: contenedor (posición en el suelo) con su sombra y el sprite que respira encima. */
@@ -352,7 +355,7 @@ export class StageScene extends Phaser.Scene {
       y: destino.y,
       duration: duracion,
       ease: 'Linear',
-      onUpdate: (tween: Phaser.Tweens.Tween) => pj.paso(Math.floor(tween.progress * 4) % 2),
+      onUpdate: (tween: Phaser.Tweens.Tween) => pj.paso(CICLO_PASO[Math.floor(tween.progress * 4) % 4]),
     });
     pj.paso(0);
     pj.fila(to.y);

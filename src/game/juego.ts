@@ -107,7 +107,7 @@ export class Juego {
       aspecto,
       (n) => this.elegirHeroe(n),
     );
-    dom.portadaEscena.replaceChildren(arte.escenaPortada(aspecto, 9));
+    dom.portadaEscena.replaceChildren(...arte.escenaPortada(aspecto, 9));
     dom.portadaCristal.replaceChildren(arte.fragmento(7));
     const hechos = this.hechos.size;
     const empezado = hechos > 0 || this.progreso.nivel > 0;

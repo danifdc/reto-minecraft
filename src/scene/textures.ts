@@ -49,6 +49,9 @@ function sprite(nombre: string, filas: string[], paleta: Paleta): HTMLCanvasElem
 /** Canvas de BIT de frente, para la interfaz (ícono de la misión). */
 export const canvasBit = () => sprite('bit', BIT.frente[0], PALETA_BIT);
 
+/** Canvas del fragmento del Cristal, para el ícono de la pestaña. */
+export const canvasFragmento = () => sprite('fragmento', FRAGMENTO, PALETA_FRAGMENTO);
+
 /** Canvas del héroe de frente, para la interfaz (selección de personaje). */
 export const canvasHeroe = (aspecto: number) => sprite(`heroe${aspecto}`, ASPECTOS[aspecto].cuadros.frente[0], ASPECTOS[aspecto].paleta);
 

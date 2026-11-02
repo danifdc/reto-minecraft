@@ -9,8 +9,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <!-- Mientras carga el juego (los estilos llegan con él): fondo oscuro y "Cargando…", sin mostrar el HTML sin estilos -->
+  <style>
+    html { background: #171A21; }
+    body { margin: 0; }
+    body:not(.listo) > :not(#cargando) { visibility: hidden; }
+    body.listo > #cargando { display: none; }
+    #cargando {
+      position: fixed; inset: 0; display: grid; place-items: center;
+      color: #AEB4C2; font: 400 48px 'Jersey 10', sans-serif; letter-spacing: 2px;
+      opacity: 0; animation: cargando-aparece .2s .4s forwards;
+    }
+    @keyframes cargando-aparece { to { opacity: 1; } }
+  </style>
 </head>
 <body>
+  <div id="cargando">Cargando…</div>
   <div id="app">
     <header class="barra">
       <h1 class="titulo">El Cristal <span>del Amanecer</span></h1>

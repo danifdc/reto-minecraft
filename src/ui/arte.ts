@@ -13,10 +13,13 @@ function aDom(canvas: HTMLCanvasElement, escala: number): HTMLCanvasElement {
 }
 
 const heroe = (aspecto: number) => ASPECTOS[aspecto].cuadros.frente[0];
-const BIT_APAGADO: Paleta = { ...PALETA_BIT, e: '#3A4150', E: '#4A5262', r: '#5A3A30', y: '#6B717C' };
+const BIT_APAGADO: Paleta = { ...PALETA_BIT, W: '#7C828E', R: '#5A3A30', r: '#46302A' };
 
-/** Isla flotante de pasto con el héroe y BIT (portada). */
-export function escenaPortada(aspecto: number, escala: number): HTMLCanvasElement {
+/**
+ * Isla flotante de pasto con el héroe y BIT (portada). Devuelve capas del mismo tamaño para apilar con CSS: la isla
+ * y cada personaje por separado, así los personajes pueden subir y bajar sobre la isla.
+ */
+export function escenaPortada(aspecto: number, escala: number): HTMLCanvasElement[] {
   const [c, ctx] = lienzo(64, 58);
   // Superficie de pasto (vista desde arriba) con algunas flores.
   for (let x = 4; x < 60; x += PX) {
@@ -39,9 +42,17 @@ export function escenaPortada(aspecto: number, escala: number): HTMLCanvasElemen
   // Sombras de los personajes y personajes.
   rect(ctx, 16, 33, 10, 2, 'rgba(0,0,0,0.25)');
   rect(ctx, 37, 34, 10, 2, 'rgba(0,0,0,0.25)');
-  dibujar(ctx, heroe(aspecto), ASPECTOS[aspecto].paleta, 13, 14);
-  dibujar(ctx, BIT.frente[0], PALETA_BIT, 34, 15);
-  return aDom(c, escala);
+  const personaje = (filas: string[], paleta: Paleta, x: number, clase: string) => {
+    const [capa, cctx] = lienzo(64, 58);
+    dibujar(cctx, filas, paleta, x, 14);
+    capa.className = clase;
+    return aDom(capa, escala);
+  };
+  return [
+    aDom(c, escala),
+    personaje(heroe(aspecto), ASPECTOS[aspecto].paleta, 13, 'isla-personaje'),
+    personaje(BIT.frente[0], PALETA_BIT, 34, 'isla-personaje isla-bit'),
+  ];
 }
 
 /** Héroe y BIT lado a lado (diálogo de victoria, pantalla final). */

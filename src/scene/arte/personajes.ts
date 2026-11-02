@@ -6,8 +6,8 @@ import type { Paleta } from '../pixel';
  */
 
 export type Vista = 'frente' | 'espalda' | 'lado';
-/** Cuadros de caminata: 0 = parado / pierna A, 1 = pierna B. */
-export type Cuadros = Record<Vista, [string[], string[]]>;
+/** Cuadros: 0 = parado, 1 y 2 = un paso con cada pie (al caminar: 1, 0, 2, 0). */
+export type Cuadros = Record<Vista, [string[], string[], string[]]>;
 
 /** Reemplaza filas a partir de `desde` (para variantes de cuadros sin repetir todo el sprite). */
 const con = (base: string[], desde: number, filas: string[]) => [
@@ -18,87 +18,87 @@ const con = (base: string[], desde: number, filas: string[]) => [
 
 // ---------------------------------------------------------------- BIT (robot ayudante)
 
+/*
+ * BIT usa el diseño del Agente del proyecto "Simulador de Minecraft Education" (dibujado por el usuario): cabeza con un
+ * panel más oscuro arriba, ojos blancos a los costados, luz roja en el pecho, brazos largos marrones y piernas cortas.
+ * Mide 10×15 dentro del lienzo de 16×20 y apoya los pies en la última fila.
+ */
+
 const BIT_FRENTE = [
-  '.......y........',
-  '.......a........',
-  '..oooooooooooo..',
-  '..owwwwwwwwwgo..',
-  '..owkkkkkkkkgo..',
-  '..owkEekkeEkgo..',
-  '..owkeekkeekgo..',
-  '..owkkkkkkkkgo..',
-  '..ogggggggggso..',
-  '..osssssssssso..',
-  '...oooooooooo...',
-  '...oggggggggo...',
-  '..oswggrrggsso..',
-  '..oswggrrggsso..',
-  '..osggggggggso..',
-  '..oossssssssoo..',
-  '...oggo..oggo...',
-  '...osso..osso...',
-  '...oooo..oooo...',
   '................',
+  '................',
+  '................',
+  '................',
+  '................',
+  '...oooooooo.....',
+  '...oLLLLLLo.....',
+  '...oLGGGGLo.....',
+  '...oLGGGGLo.....',
+  '...oWoLLoWo.....',
+  '...oWoLLoWo.....',
+  '...oGGLLGGo.....',
+  '..oooooooooo....',
+  '..oBoDRRDoBo....',
+  '..oBoDrrDoBo....',
+  '..oBoDDDDoBo....',
+  '..oboGGGGobo....',
+  '..ooGGooGGoo....',
+  '...oLLooLLo.....',
+  '...oooooooo.....',
 ];
 
-const BIT_ESPALDA = [
-  '.......y........',
-  '.......a........',
-  '..oooooooooooo..',
-  '..owwwwwwwwwgo..',
-  '..owggggggggso..',
-  '..owgsgsgsggso..',
-  '..owgsgsgsggso..',
-  '..owggggggggso..',
-  '..ogggggggggso..',
-  '..osssssssssso..',
-  '...oooooooooo...',
-  '...oggggggggo...',
-  '..oswggggggsso..',
-  '..oswggssggsso..',
-  '..osggggggggso..',
-  '..oossssssssoo..',
-  '...oggo..oggo...',
-  '...osso..osso...',
-  '...oooo..oooo...',
-  '................',
-];
+const BIT_ESPALDA = con(BIT_FRENTE, 7, [
+  '...oLGGGGLo.....',
+  '...oLGGGGLo.....',
+  '...oLGGGGLo.....',
+  '...oLGGGGLo.....',
+  '...oLLLLLLo.....',
+  '..oooooooooo....',
+  '..oBoDDDDoBo....',
+  '..oBoDGGDoBo....',
+]);
 
+/** Mirando a la derecha (a la izquierda se dibuja reflejado). La nariz sobresale de la cabeza. */
 const BIT_LADO = [
-  '.......y........',
-  '.......a........',
-  '..oooooooooooo..',
-  '..owwwwwwwwwgo..',
-  '..owggggkkkkko..',
-  '..owggggkkkEeo..',
-  '..owggggkkkeeo..',
-  '..owggggkkkkko..',
-  '..ogggggggggso..',
-  '..osssssssssso..',
-  '...oooooooooo...',
-  '....oggggggo....',
-  '....owggggro....',
-  '....owgsgggo....',
-  '....owgsgggo....',
-  '....oossssoo....',
-  '.....oggggo.....',
-  '.....osggso.....',
-  '.....oooooo.....',
   '................',
+  '................',
+  '................',
+  '................',
+  '................',
+  '....oooooooo....',
+  '....oLLLLLLo....',
+  '....oLGGGGLo....',
+  '....oLGGGGLo....',
+  '....oLLLLWoLo...',
+  '....oLLLLWoLo...',
+  '....oGGGLLLo....',
+  '....oooooooo....',
+  '.....oDBBRo.....',
+  '.....oDBBro.....',
+  '.....oDbbDo.....',
+  '.....oGGGGo.....',
+  '......oGGo......',
+  '......oLLo......',
+  '......oooo......',
 ];
 
-const PIERNAS_FRENTE_B = ['...oggo..oggo...', '...osso..oooo...', '...oooo.........'];
-const PIERNAS_LADO_B = ['....oggooggo....', '...osso..osso...', '...oooo..oooo...'];
+// Cuadros de caminata: de frente y de espalda sube un pie y después el otro; de costado, las piernas se abren.
+const PIE_IZQUIERDO = ['...oooooLLo.....', '.......oooo.....'];
+const PIE_DERECHO = ['...oLLooooo.....', '....oooo........'];
+const PIERNAS_ABIERTAS = ['....oGo..oGo....', '....oLo..oLo....', '....ooo..ooo....'];
+
+/** De frente y de espalda el dibujo (columnas 2 a 11) queda un pixel a la izquierda del centro: se corre uno a la derecha. */
+const centrado = (filas: string[]) => filas.map((fila) => '.' + fila.slice(0, -1));
 
 export const BIT: Cuadros = {
-  frente: [BIT_FRENTE, con(BIT_FRENTE, 16, PIERNAS_FRENTE_B)],
-  espalda: [BIT_ESPALDA, con(BIT_ESPALDA, 16, PIERNAS_FRENTE_B)],
-  lado: [BIT_LADO, con(BIT_LADO, 16, PIERNAS_LADO_B)],
+  frente: [BIT_FRENTE, con(BIT_FRENTE, 18, PIE_IZQUIERDO), con(BIT_FRENTE, 18, PIE_DERECHO)].map(centrado) as Cuadros['frente'],
+  espalda: [BIT_ESPALDA, con(BIT_ESPALDA, 18, PIE_DERECHO), con(BIT_ESPALDA, 18, PIE_IZQUIERDO)].map(centrado) as Cuadros['espalda'],
+  lado: [BIT_LADO, con(BIT_LADO, 17, PIERNAS_ABIERTAS), con(BIT_LADO, 17, PIERNAS_ABIERTAS)],
 };
 
 export const PALETA_BIT: Paleta = {
-  o: '#2E333C', w: '#F2F4F7', g: '#C9CED6', s: '#959CA8', k: '#1F2633',
-  e: '#5FD3F0', E: '#E8FBFF', r: '#E8572A', a: '#6B717C', y: '#F2C94C',
+  o: '#262626', L: '#E2E2E2', G: '#C0C0C0', D: '#969696',
+  W: '#FFFFFF', B: '#B98545', b: '#7A5230', R: '#E22222', r: '#A01818',
 };
 
 // ---------------------------------------------------------------- Héroe
@@ -172,7 +172,8 @@ const HEROE_LADO = [
   '.....ooooooo....',
 ];
 
-const H_PIERNAS_FRENTE_B = ['...oPPPooPPPo...', '...oBBBooPPPo...', '....ooo.oBBBo...', '.........ooo....'];
+const H_PIE_IZQUIERDO = ['...oPPPooPPPo...', '...oBBBooPPPo...', '....ooo.oBBBo...', '.........ooo....'];
+const H_PIE_DERECHO = ['...oPPPooPPPo...', '...oPPPooBBBo...', '...oBBBo.ooo....', '....ooo.........'];
 const H_PIERNAS_LADO_B = ['....oPPooPPo....', '...oPPo..oPPo...', '...oBBo..oBBBo..', '...ooo...ooooo..'];
 
 /** Variante de pelo largo: reemplaza filas de la cabeza. */
@@ -192,11 +193,15 @@ const PELO_LARGO = {
 };
 
 function cuadrosHeroe(largo: boolean): Cuadros {
-  const pelo = (v: Vista, s: string[]) => (largo ? PELO_LARGO[v](s) : s);
+  /** Los 3 cuadros de una vista: parado y un paso con cada pie (con el pelo largo si corresponde). */
+  const cuadros = (v: Vista, base: string[], paso1: string[], paso2: string[]): [string[], string[], string[]] => {
+    const pelo = (filas: string[]) => (largo ? PELO_LARGO[v](filas) : filas);
+    return [pelo(base), pelo(con(base, 16, paso1)), pelo(con(base, 16, paso2))];
+  };
   return {
-    frente: [pelo('frente', HEROE_FRENTE), pelo('frente', con(HEROE_FRENTE, 16, H_PIERNAS_FRENTE_B))],
-    espalda: [pelo('espalda', HEROE_ESPALDA), pelo('espalda', con(HEROE_ESPALDA, 16, H_PIERNAS_FRENTE_B))],
-    lado: [pelo('lado', HEROE_LADO), pelo('lado', con(HEROE_LADO, 16, H_PIERNAS_LADO_B))],
+    frente: cuadros('frente', HEROE_FRENTE, H_PIE_IZQUIERDO, H_PIE_DERECHO),
+    espalda: cuadros('espalda', HEROE_ESPALDA, H_PIE_DERECHO, H_PIE_IZQUIERDO),
+    lado: cuadros('lado', HEROE_LADO, H_PIERNAS_LADO_B, H_PIERNAS_LADO_B),
   };
 }
 
@@ -206,7 +211,8 @@ export interface Aspecto {
   paleta: Paleta;
 }
 
-const BASE_HEROE = { W: '#FFFFFF', k: '#2A1A10', o: '#1E1A22' };
+/** El contorno es el mismo de BIT (PALETA_BIT.o): todos los personajes comparten el mismo "negro". */
+const BASE_HEROE = { W: '#FFFFFF', k: '#2A1A10', o: '#262626' };
 
 /** Los 4 aspectos que el alumno puede elegir para su héroe. */
 export const ASPECTOS: Aspecto[] = [

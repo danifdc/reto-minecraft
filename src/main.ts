@@ -3,7 +3,7 @@ import { Editor } from './blocks/editor';
 import { Juego } from './game/juego';
 import { cargarProgreso } from './game/progreso';
 import { NIVELES } from './levels';
-import { canvasBit } from './scene/textures';
+import { canvasBit, canvasFragmento } from './scene/textures';
 import { crearEscenario } from './scene/StageScene';
 import { dom } from './ui/ui';
 
@@ -24,11 +24,27 @@ function avisoMovil() {
   document.getElementById('btn-movil-igual')!.onclick = () => (aviso.hidden = true);
 }
 
-/** BIT como ícono de la pestaña. */
+/** El fragmento del Cristal como ícono de la pestaña (recortado y ampliado para que llene el ícono). */
 function favicon() {
+  const fuente = canvasFragmento();
+  const datos = fuente.getContext('2d')!.getImageData(0, 0, fuente.width, fuente.height);
+  let x0 = fuente.width, y0 = fuente.height, x1 = -1, y1 = -1;
+  for (let y = 0; y < fuente.height; y++) {
+    for (let x = 0; x < fuente.width; x++) {
+      if (datos.data[(y * fuente.width + x) * 4 + 3] === 0) continue;
+      x0 = Math.min(x0, x); x1 = Math.max(x1, x);
+      y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+    }
+  }
+  const ancho = x1 - x0 + 1;
+  const alto = y1 - y0 + 1;
+  const tam = 32;
+  const escala = Math.max(1, Math.floor(tam / Math.max(ancho, alto)));
   const c = document.createElement('canvas');
-  c.width = c.height = 20;
-  c.getContext('2d')!.drawImage(canvasBit(), 2, 0);
+  c.width = c.height = tam;
+  const ctx = c.getContext('2d')!;
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(fuente, x0, y0, ancho, alto, Math.floor((tam - ancho * escala) / 2), Math.floor((tam - alto * escala) / 2), ancho * escala, alto * escala);
   document.querySelector<HTMLLinkElement>('link[rel=icon]')!.href = c.toDataURL();
 }
 
@@ -53,6 +69,8 @@ async function iniciar() {
   const escena = await crearEscenario(dom.escenario);
   juego = new Juego(NIVELES, editor, escena, cargarProgreso());
   juego.iniciar();
+  // Ya está todo dibujado: se muestra la app (index.html la oculta mientras carga).
+  document.body.classList.add('listo');
 
   if (import.meta.env.DEV) {
     // Ganchos para las pruebas automáticas (scripts/captura.mjs). No existen en la versión publicada.
